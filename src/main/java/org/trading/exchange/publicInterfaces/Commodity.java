@@ -12,5 +12,11 @@ public interface Commodity extends Serializable {
 
 	String getDescription();
 
+	String getPriceUnit();
+
+	String getQuantityUnit();
+
 	long getPriceToQuantityRatio();
+
+	boolean isGlobal();
 }
