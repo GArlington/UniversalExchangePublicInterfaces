@@ -1,9 +1,11 @@
 package org.processing;
 
+import java.io.Serializable;
+
 /**
  * Created by GArlington.
  */
-interface ProcessableBase {
+interface ProcessableBase extends Serializable {
 	State getProcessState();
 
 	void setProcessState(State state);

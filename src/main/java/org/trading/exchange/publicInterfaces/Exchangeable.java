@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Created by GArlington.
  */
-public interface Exchangeable extends PreProcessable, Processable, PostProcessable, Serializable {
+public interface Exchangeable extends PreProcessable, Processable, PostProcessable {
 	/**
 	 * Get Commodity offered for exchange
 	 *
