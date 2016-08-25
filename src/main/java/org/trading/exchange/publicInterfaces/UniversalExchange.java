@@ -21,7 +21,7 @@ public interface UniversalExchange extends Serializable {
 
 	Exchangeable acceptOrder(Exchangeable exchangeable) throws IllegalStateException;
 
-	Exchanged matchOrder(Exchangeable exchangeable, Collection<Exchangeable> exchangeables);
-
 	Collection<Exchangeable> getMatchingOrders(Exchangeable exchangeable);
+
+	Exchanged matchOrder(Exchangeable exchangeable, Collection<Exchangeable> exchangeables);
 }
