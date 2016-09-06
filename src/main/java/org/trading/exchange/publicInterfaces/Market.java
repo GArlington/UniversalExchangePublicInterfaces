@@ -2,26 +2,71 @@ package org.trading.exchange.publicInterfaces;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Created by GArlington.
  */
 public interface Market extends Serializable {
+
 	String getId();
 
-	Location getLocation();
-
 	String getName();
+
+	Location getLocation();
 
 	Commodity getOffered();
 
 	Commodity getRequired();
 
-	Collection<Exchangeable> getOrders();
+	Collection<? extends Exchangeable> getOrders();
 
-	Collection<Exchangeable> getOrders(Exchangeable.State state);
+	default Collection<? extends Exchangeable> getOrders(Exchangeable.State state) {
+		return getOrders().stream().filter(order -> (!state.precedes(order.getExchangeableState()))).sorted()
+				.collect(Collectors.toList());
+	}
 
-	void validateMarket();
+	boolean accept(Exchangeable exchangeable);
 
-	boolean validateLocation();
+	default boolean validate() throws IllegalStateException {
+		if (!validateLocation()) {
+			throw new IllegalStateException(this + " configuration is invalid. "
+//                    + getLocation() + " can't handle offered:" + getOffered() + " or required:" + getRequired()
+			);
+		}
+		if (!getOrders().stream().allMatch(this::validate)) {
+			throw new IllegalStateException(this + " configuration is invalid. "
+//                    + getOrders() + " don't match offered:" + getOffered() + " or required:" + getRequired()
+			);
+		}
+		return true;
+	}
+
+	default boolean validateLocation() {
+		return getLocation().checkCommodity(getOffered()) && getLocation().checkCommodity(getRequired());
+	}
+
+	default boolean validate(Exchangeable exchangeable) {
+		return isMarket(exchangeable) || isCounter(exchangeable);
+	}
+
+	default boolean isMarket(Exchangeable exchangeable) {
+		return getOffered().equals(exchangeable.getOffered()) && getRequired().equals(exchangeable.getRequired());
+	}
+
+	default boolean isCounter(Exchangeable exchangeable) {
+		return getOffered().equals(exchangeable.getRequired()) && getRequired().equals(exchangeable.getOffered());
+	}
+
+	interface Builder<T> extends org.processing.Builder {
+		Builder<T> setId(String id);
+
+		Builder<T> setName(String name);
+
+		Builder<T> setLocation(Location location);
+
+		Builder<T> setOffered(Commodity offered);
+
+		Builder<T> setRequired(Commodity required);
+	}
 }

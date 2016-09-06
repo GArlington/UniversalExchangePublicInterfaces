@@ -18,5 +18,9 @@ public interface Commodity extends Serializable {
 
 	long getPriceToQuantityRatio();
 
+	/**
+	 * Global commodities are currencies, they have a unique property of portability
+	 * as money are not Location specific
+	 */
 	boolean isGlobal();
 }

@@ -9,5 +9,5 @@ import java.util.Collection;
 public interface Exchanged extends Serializable {
 	Exchangeable getExchangeable();
 
-	Collection<Exchangeable> getMatchedExchangeables();
+	Collection<? extends Exchangeable> getMatchedExchangeables();
 }

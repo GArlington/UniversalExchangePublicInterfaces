@@ -9,45 +9,95 @@ import java.io.Serializable;
 /**
  * Created by GArlington.
  */
-public interface Exchangeable extends PreProcessable, Processable, PostProcessable {
+public interface Exchangeable extends PreProcessable, Processable, PostProcessable, Comparable {
+	static Exchangeable validate(Exchangeable check) throws IllegalStateException {
+		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() != 0L &&
+				check.getRequiredValue() != 0L) {
+			check.setExchangeableState(State.VALIDATED);
+			return check;
+		} else {
+			throw new IllegalStateException("All values are mandatory."
+//					+ check
+			);
+		}
+	}
+
 	/**
 	 * Get Commodity offered for exchange
-	 *
-	 * @return
 	 */
 	Commodity getOffered();
 
 	/**
 	 * Get quantity of Commodity offered for exchange
-	 *
-	 * @return
 	 */
 	long getOfferedValue();
 
 	/**
 	 * Get Required Commodity to exchange for
-	 *
-	 * @return
 	 */
 	Commodity getRequired();
 
 	/**
 	 * Get quantity of Required Commodity to exchange for
-	 *
-	 * @return
 	 */
 	long getRequiredValue();
 
 	/**
-	 * Validate Exchangeable
-	 *
-	 * @return
+	 * Get exchange rate
 	 */
-	Exchangeable validate() throws IllegalStateException;
+	Comparable getExchangeRate();
+
+	/**
+	 * Get inverse exchange rate
+	 */
+	Comparable getInverseExchangeRate();
+
+	/**
+	 * Validate Exchangeable
+	 */
+	default Exchangeable validate() throws IllegalStateException {
+		return validate(this);
+	}
+
+	/**
+	 * Check if the Exchangeable is fully matched and is ready for further processing
+	 */
+	boolean isFullyMatched();
+
+	/**
+	 * Check if the Exchangeable passed as parameter will match (at least part fulfill) this Exchangeable
+	 *
+	 * @param exchangeable
+	 */
+	default boolean isMatching(Exchangeable exchangeable) {
+		return getOffered().equals(exchangeable.getRequired()) && getRequired().equals(exchangeable.getOffered());
+	}
+
+	/**
+	 * Process this Exchangeable and matched Exchangeable passed as parameter
+	 *
+	 * This method will change both this Exchangeable and Exchangeable passed as parameter if they match
+	 *
+	 * @param exchangeable
+	 * @return processed Exchangeable that was passed as parameter
+	 */
+	Exchangeable match(Exchangeable exchangeable);
+
+	Exchanged getExchanged();
+
+	void setExchanged(Exchanged exchanged);
 
 	State getExchangeableState();
 
 	void setExchangeableState(State state);
+
+	@Override
+	default int compareTo(Object object) {
+		if (this.equals(object)) return 0;
+		if (object == null || getClass() != object.getClass()) return -1;
+		Exchangeable exchangeable = (Exchangeable) object;
+		return getExchangeRate().compareTo(exchangeable.getExchangeRate());
+	}
 
 	enum State implements Serializable {
 		INITIALISED(Processable.State.INITIALISED),
@@ -71,5 +121,23 @@ public interface Exchangeable extends PreProcessable, Processable, PostProcessab
 			this.ordinal = ordinal;
 			this.name = name;
 		}
+
+		public boolean precedes(State state) {
+			return ordinal < state.ordinal;
+		}
+
+		public boolean succeeds(State state) {
+			return ordinal > state.ordinal;
+		}
+	}
+
+	interface Builder<T> extends org.processing.Builder {
+		Builder<T> setOffered(Commodity offered);
+
+		Builder<T> setOfferedValue(long offeredValue);
+
+		Builder<T> setRequired(Commodity required);
+
+		Builder<T> setRequiredValue(long requiredValue);
 	}
 }
