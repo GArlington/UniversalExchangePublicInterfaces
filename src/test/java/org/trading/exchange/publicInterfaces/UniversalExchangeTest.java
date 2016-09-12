@@ -108,7 +108,7 @@ public class UniversalExchangeTest {
 	public void getMarketsByExchangeable() throws Exception {
 		Exchangeable exchangeable = mock(Exchangeable.class);
 		Market market = mock(Market.class);
-		doReturn(true).when(market).isMarket(exchangeable);
+		doReturn(true).when(market).validate(exchangeable);
 		victim.open(market);
 
 		assertEquals(1, victim.getMarkets(exchangeable).size());
