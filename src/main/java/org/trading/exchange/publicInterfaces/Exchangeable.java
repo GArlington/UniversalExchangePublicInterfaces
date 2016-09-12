@@ -11,8 +11,8 @@ import java.io.Serializable;
  */
 public interface Exchangeable extends PreProcessable, Processable, PostProcessable, Comparable {
 	static Exchangeable validate(Exchangeable check) throws IllegalStateException {
-		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() != 0L &&
-				check.getRequiredValue() != 0L) {
+		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() > 0L &&
+				check.getRequiredValue() > 0L) {
 			check.setExchangeableState(State.VALIDATED);
 			return check;
 		} else {
@@ -94,9 +94,14 @@ public interface Exchangeable extends PreProcessable, Processable, PostProcessab
 	@Override
 	default int compareTo(Object object) {
 		if (this.equals(object)) return 0;
-		if (object == null || getClass() != object.getClass()) return -1;
+		if (object == null || getClass() != object.getClass()) return 1;
 		Exchangeable exchangeable = (Exchangeable) object;
-		return getExchangeRate().compareTo(exchangeable.getExchangeRate());
+
+		int result;
+		result = getOffered().compareTo(exchangeable.getOffered());
+		if (result == 0) result = getRequired().compareTo(exchangeable.getRequired());
+		if (result == 0) result = getExchangeRate().compareTo(exchangeable.getExchangeRate());
+		return result;
 	}
 
 	enum State implements Serializable {
