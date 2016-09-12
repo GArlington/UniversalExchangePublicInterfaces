@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by GArlington.
@@ -23,7 +24,13 @@ public interface UniversalExchange extends Serializable {
 	 *
 	 * @param commodity
 	 */
-	Collection<? extends Location> getLocations(Commodity commodity);
+	default Collection<? extends Location> getLocations(Commodity commodity) {
+		Stream<? extends Location> stream = getMarkets().stream().map(Market::getLocation);
+		if (commodity != null) {
+			stream = stream.filter(location -> location.checkCommodity(commodity));
+		}
+		return stream.collect(Collectors.toList());
+	}
 
 	/**
 	 * Get all open markets
@@ -34,16 +41,22 @@ public interface UniversalExchange extends Serializable {
 	 * Get all open markets suitable for Exchangeable
 	 */
 	default Collection<? extends Market> getMarkets(Exchangeable exchangeable) {
-		return getMarkets().stream().filter(market ->
-				(market.isMarket(exchangeable) || market.isCounter(exchangeable))).collect(Collectors.toList());
+		Stream<? extends Market> stream = getMarkets().stream();
+		if (exchangeable != null) {
+			stream.filter(market -> (market.isMarket(exchangeable) || market.isCounter(exchangeable)));
+		}
+		return stream.collect(Collectors.toList());
 	}
 
 	/**
 	 * Get all open markets at a Location
 	 */
 	default Collection<? extends Market> getMarkets(Location location) {
-		return getMarkets().stream().filter(market -> market.getLocation().equals(location))
-				.collect(Collectors.toList());
+		Stream<? extends Market> stream = getMarkets().stream();
+		if (location != null) {
+			stream.filter(market -> market.getLocation().equals(location));
+		}
+		return stream.collect(Collectors.toList());
 	}
 
 	/**
