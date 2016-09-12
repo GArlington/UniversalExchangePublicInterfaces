@@ -8,6 +8,28 @@
     <artifactId>universalExchangePublicInterfaces</artifactId>
     <version>1.0.1-SNAPSHOT</version>
 
+    <dependencies>
+        <!--
+                <dependency>
+                    <groupId>aspectj</groupId>
+                    <artifactId>aspectjrt</artifactId>
+                    <version>1.5.4</version>
+                </dependency>
+        -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>

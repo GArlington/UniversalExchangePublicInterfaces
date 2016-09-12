@@ -43,7 +43,7 @@ public interface UniversalExchange extends Serializable {
 	default Collection<? extends Market> getMarkets(Exchangeable exchangeable) {
 		Stream<? extends Market> stream = getMarkets().stream();
 		if (exchangeable != null) {
-			stream.filter(market -> (market.isMarket(exchangeable) || market.isCounter(exchangeable)));
+			stream = stream.filter(market -> (market.isMarket(exchangeable) || market.isCounter(exchangeable)));
 		}
 		return stream.collect(Collectors.toList());
 	}
@@ -54,7 +54,7 @@ public interface UniversalExchange extends Serializable {
 	default Collection<? extends Market> getMarkets(Location location) {
 		Stream<? extends Market> stream = getMarkets().stream();
 		if (location != null) {
-			stream.filter(market -> market.getLocation().equals(location));
+			stream = stream.filter(market -> market.getLocation().equals(location));
 		}
 		return stream.collect(Collectors.toList());
 	}
