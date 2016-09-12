@@ -22,14 +22,24 @@ public interface Market extends Serializable {
 	Collection<? extends Exchangeable> getOrders();
 
 	default Collection<? extends Exchangeable> getOrders(Exchangeable.State state) {
+		return getOrders().stream()
+				.filter(order -> (state.equals(order.getExchangeableState())))
+				.sorted()
+				.collect(Collectors.toList());
+	}
+
+//	TODO - Do we need a separate method to get all states preceding the given state?
+/*
+	default Collection<? extends Exchangeable> getOrders(Exchangeable.State state) {
 		return getOrders().stream().filter(order -> (!state.precedes(order.getExchangeableState()))).sorted()
 				.collect(Collectors.toList());
 	}
+*/
 
 	boolean accept(Exchangeable exchangeable);
 
 	default boolean validate() throws IllegalStateException {
-		if (!validateLocation()) {
+		if (!validateLocation(getLocation())) {
 			throw new IllegalStateException(this + " configuration is invalid. "
 //                    + getLocation() + " can't handle offered:" + getOffered() + " or required:" + getRequired()
 			);
@@ -42,8 +52,8 @@ public interface Market extends Serializable {
 		return true;
 	}
 
-	default boolean validateLocation() {
-		return getLocation().checkCommodity(getOffered()) && getLocation().checkCommodity(getRequired());
+	default boolean validateLocation(Location location) {
+		return location.checkCommodity(getOffered()) && location.checkCommodity(getRequired());
 	}
 
 	default boolean validate(Exchangeable exchangeable) {
