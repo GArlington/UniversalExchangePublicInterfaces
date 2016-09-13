@@ -32,8 +32,14 @@ public class ExchangeableTest {
 	}
 
 	@Test
-	public void validate1() throws Exception {
+	public void validateStatic() throws Exception {
 		assertEquals(victim, Exchangeable.validate(victim));
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void validateStaticInvalid() throws Exception {
+		Exchangeable test = mock(Exchangeable.class);
+		assertEquals(victim, Exchangeable.validate(test));
 	}
 
 	@Test

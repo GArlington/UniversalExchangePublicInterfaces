@@ -24,7 +24,7 @@ public class UniversalExchangeTest {
 
 			@Override
 			public String getName() {
-				return null;
+				return getClass().getSimpleName();
 			}
 
 			@Override
@@ -34,13 +34,16 @@ public class UniversalExchangeTest {
 
 			@Override
 			public Market validate(Market market) throws InvalidParameterException {
-				return null;
+				if (getMarkets().contains(market)) {
+					throw new InvalidParameterException(market + " already exists on " + this);
+				}
+				return market;
 			}
 
 			@Override
 			public Market open(Market market) throws IllegalStateException, InvalidParameterException {
-				if (!((Collection<Market>) getMarkets()).add(market)) {
-					throw new IllegalStateException(market + " can not be created on ");
+				if (!((Collection<Market>) getMarkets()).add(validate(market))) {
+					throw new IllegalStateException(market + " can not be created on " + this);
 				}
 				return market;
 			}
@@ -74,6 +77,37 @@ public class UniversalExchangeTest {
 	}
 
 	@Test
+	public void getCommodities() throws Exception {
+		assertEquals(0, victim.getCommodities().size());
+
+		Market market = mock(Market.class);
+		victim.open(market);
+
+		assertEquals(2, victim.getCommodities().size());
+	}
+
+	@Test
+	public void getCommoditiesByLocation() throws Exception {
+		Location location = mock(Location.class);
+		Location location2 = mock(Location.class);
+		assertEquals(0, victim.getCommodities(location).size());
+		assertEquals(0, victim.getCommodities(location2).size());
+
+		Market market = mock(Market.class);
+		doReturn(location).when(market).getLocation();
+
+		victim.open(market);
+		assertEquals(2, victim.getCommodities(location).size());
+		assertEquals(0, victim.getCommodities(location2).size());
+
+		market = mock(Market.class);
+		doReturn(location2).when(market).getLocation();
+
+		victim.open(market);
+		assertEquals(2, victim.getCommodities(location2).size());
+	}
+
+	@Test
 	public void getLocations() throws Exception {
 		assertEquals(0, victim.getLocations().size());
 
@@ -102,6 +136,10 @@ public class UniversalExchangeTest {
 		victim.open(market);
 
 		assertEquals(1, victim.getMarkets().size());
+
+		market = mock(Market.class);
+		victim.open(market);
+		assertEquals(2, victim.getMarkets().size());
 	}
 
 	@Test

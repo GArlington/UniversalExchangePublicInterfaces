@@ -13,6 +13,21 @@ public interface UniversalExchange extends Serializable {
 	String getName();
 
 	/**
+	 * Get all commodities currently handled by the Exchange
+	 */
+	default Collection<? extends Commodity> getCommodities() {
+		return getCommodities(null);
+	}
+
+	/**
+	 * Get all commodities currently handled by the Exchange at Location
+	 */
+	default Collection<? extends Commodity> getCommodities(Location location) {
+		return Stream.concat(getMarkets(location).stream().map(Market::getOffered),
+				getMarkets(location).stream().map(Market::getRequired)).collect(Collectors.toList());
+	}
+
+	/**
 	 * Get all Locations that this Exchange can handle
 	 */
 	default Collection<? extends Location> getLocations() {
@@ -41,22 +56,17 @@ public interface UniversalExchange extends Serializable {
 	 * Get all open markets suitable for Exchangeable
 	 */
 	default Collection<? extends Market> getMarkets(Exchangeable exchangeable) {
-		Stream<? extends Market> stream = getMarkets().stream();
-		if (exchangeable != null) {
-			stream = stream.filter(market -> market.validate(exchangeable));
-		}
-		return stream.collect(Collectors.toList());
+		if (exchangeable == null) return getMarkets();
+		return getMarkets().stream().filter(market -> market.validate(exchangeable)).collect(Collectors.toList());
 	}
 
 	/**
 	 * Get all open markets at a Location
 	 */
 	default Collection<? extends Market> getMarkets(Location location) {
-		Stream<? extends Market> stream = getMarkets().stream();
-		if (location != null) {
-			stream = stream.filter(market -> market.getLocation().equals(location));
-		}
-		return stream.collect(Collectors.toList());
+		if (location == null) return getMarkets();
+		return getMarkets().stream().filter(market -> market.getLocation().equals(location))
+				.collect(Collectors.toList());
 	}
 
 	/**
