@@ -78,5 +78,7 @@ public interface Market extends Serializable {
 		Builder<T> setOffered(Commodity offered);
 
 		Builder<T> setRequired(Commodity required);
+
+		Builder<T> accept(Exchangeable exchangeable);
 	}
 }

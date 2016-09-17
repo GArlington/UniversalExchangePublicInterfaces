@@ -69,7 +69,7 @@ public class UniversalExchangeTest {
 			}
 
 			@Override
-			public Exchanged match(Exchangeable exchangeable, Collection<? extends Exchangeable> exchangeables)
+			public Exchanged match(Exchangeable exchangeable, Exchangeable... exchangeables)
 					throws InvalidParameterException, IllegalStateException {
 				return null;
 			}

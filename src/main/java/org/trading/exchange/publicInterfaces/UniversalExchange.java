@@ -127,6 +127,6 @@ public interface UniversalExchange extends Serializable {
 	 * @throws InvalidParameterException
 	 * @throws IllegalStateException
 	 */
-	Exchanged match(Exchangeable exchangeable, Collection<? extends Exchangeable> exchangeables)
+	Exchanged match(Exchangeable exchangeable, Exchangeable... exchangeables)
 			throws InvalidParameterException, IllegalStateException;
 }
