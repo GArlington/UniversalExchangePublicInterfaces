@@ -13,7 +13,7 @@ public interface Location extends Serializable {
 
 	String getDescription();
 
-	Collection<Commodity> getCommodities();
+	Collection<? extends Commodity> getCommodities();
 
 	boolean checkCommodity(Commodity commodity);
 }
