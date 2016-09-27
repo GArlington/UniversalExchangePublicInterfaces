@@ -29,6 +29,12 @@ public interface Commodity extends Serializable, Comparable {
 	 */
 	boolean isGlobal();
 
+	Owner getOwner();
+
+	default boolean isOwned(Owner owner) {
+		return getOwner().equals(owner);
+	}
+
 	@Override
 	default int compareTo(Object object) {
 		if (this.equals(object)) return 0;

@@ -42,6 +42,12 @@ public interface Exchangeable extends PreProcessable, Processable, PostProcessab
 	 */
 	long getRequiredValue();
 
+	Owner getOwner();
+
+	default boolean isOwned(Owner owner) {
+		return getOwner().equals(owner);
+	}
+
 	/**
 	 * Get exchange rate
 	 */
@@ -148,5 +154,7 @@ public interface Exchangeable extends PreProcessable, Processable, PostProcessab
 		Builder<T> setRequired(Commodity required);
 
 		Builder<T> setRequiredValue(long requiredValue);
+
+		Builder<T> setOwner(Owner owner);
 	}
 }

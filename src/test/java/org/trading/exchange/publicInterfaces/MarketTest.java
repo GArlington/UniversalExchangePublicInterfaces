@@ -50,6 +50,11 @@ public class MarketTest {
 			}
 
 			@Override
+			public Owner getOwner() {
+				return null;
+			}
+
+			@Override
 			public boolean accept(Exchangeable exchangeable) {
 				return false;
 			}

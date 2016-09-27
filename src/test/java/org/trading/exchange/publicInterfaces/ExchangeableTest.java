@@ -14,6 +14,7 @@ public class ExchangeableTest {
 	Exchangeable victim;
 	Commodity offered;
 	Commodity required;
+	Owner owner;
 
 	@Before
 	public void setup() {
@@ -23,7 +24,9 @@ public class ExchangeableTest {
 		doReturn(0).when(required).compareTo(required);
 		doReturn(1).when(offered).compareTo(required);
 		doReturn(-1).when(required).compareTo(offered);
-		victim = new ExchangeableMock(offered, 1L, required, 2L);
+		owner = mock(Owner.class);
+		doReturn(true).when(owner).equals(owner);
+		victim = new ExchangeableMock(offered, 1L, required, 2L, owner);
 	}
 
 	@Test
@@ -51,14 +54,19 @@ public class ExchangeableTest {
 	}
 
 	@Test
+	public void isOwned() throws Exception {
+		assertEquals(true, victim.isOwned(owner));
+	}
+
+	@Test
 	public void compareTo() throws Exception {
 		Exchangeable exchangeable =
 				new ExchangeableMock(victim.getOffered(), victim.getOfferedValue(), victim.getRequired(),
-						victim.getRequiredValue());
+						victim.getRequiredValue(), owner);
 		assertEquals(0, victim.compareTo(exchangeable));
 		exchangeable =
 				new ExchangeableMock(victim.getOffered(), victim.getOfferedValue(), victim.getOffered(),
-						victim.getRequiredValue());
+						victim.getRequiredValue(), owner);
 		assertEquals(-1, victim.compareTo(exchangeable));
 	}
 

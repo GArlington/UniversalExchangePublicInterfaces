@@ -15,5 +15,11 @@ public interface Location extends Serializable {
 
 	Collection<? extends Commodity> getCommodities();
 
+	Owner getOwner();
+
+	default boolean isOwned(Owner owner) {
+		return getOwner().equals(owner);
+	}
+
 	boolean checkCommodity(Commodity commodity);
 }

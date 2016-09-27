@@ -21,6 +21,12 @@ public interface Market extends Serializable {
 
 	Collection<? extends Exchangeable> getOrders();
 
+	Owner getOwner();
+
+	default boolean isOwned(Owner owner) {
+		return getOwner().equals(owner);
+	}
+
 	default Collection<? extends Exchangeable> getOrders(Exchangeable.State state) {
 		return getOrders().stream()
 				.filter(order -> (state.equals(order.getExchangeableState())))

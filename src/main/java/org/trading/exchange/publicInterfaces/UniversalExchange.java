@@ -16,6 +16,12 @@ public interface UniversalExchange extends Serializable {
 		return true;
 	}
 
+	Owner getOwner();
+
+	default boolean isOwned(Owner owner) {
+		return getOwner().equals(owner);
+	}
+
 	/**
 	 * Get all commodities currently handled by the Exchange
 	 */

@@ -28,6 +28,16 @@ public class UniversalExchangeTest {
 			}
 
 			@Override
+			public Owner getOwner() {
+				return new Owner() {
+					@Override
+					public String getId() {
+						return null;
+					}
+				};
+			}
+
+			@Override
 			public Collection<? extends Market> getMarkets() {
 				return markets;
 			}

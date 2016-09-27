@@ -13,6 +13,7 @@ public class ExchangeableMock implements Exchangeable {
 	private final long originalRequiredValue;
 	private final Comparable exchangeRate;
 	private final Comparable inverseExchangeRate;
+	private final Owner owner;
 	private long offeredValue;
 	private long matchedOfferedValue;
 	private long requiredValue;
@@ -23,16 +24,18 @@ public class ExchangeableMock implements Exchangeable {
 
 	public ExchangeableMock(org.trading.exchange.publicInterfaces.Exchangeable exchangeable) {
 		this(exchangeable.getOffered(), exchangeable.getOfferedValue(), exchangeable.getRequired(),
-				exchangeable.getRequiredValue());
+				exchangeable.getRequiredValue(), exchangeable.getOwner());
 	}
 
-	public ExchangeableMock(Commodity offered, long offeredValue, Commodity required, long requiredValue) {
+	public ExchangeableMock(Commodity offered, long offeredValue, Commodity required, long requiredValue, Owner
+			owner) {
 		this.offered = offered;
 		this.originalOfferedValue = this.offeredValue = offeredValue;
 		this.required = required;
 		this.originalRequiredValue = this.requiredValue = requiredValue;
 		this.exchangeRate = offeredValue / requiredValue;
 		this.inverseExchangeRate = requiredValue / offeredValue;
+		this.owner = owner;
 		initialise();
 	}
 
@@ -58,6 +61,11 @@ public class ExchangeableMock implements Exchangeable {
 	@Override
 	public long getRequiredValue() {
 		return requiredValue;
+	}
+
+	@Override
+	public Owner getOwner() {
+		return owner;
 	}
 
 	@Override
@@ -151,6 +159,7 @@ public class ExchangeableMock implements Exchangeable {
 		private Commodity required;
 		private long offeredValue;
 		private long requiredValue;
+		private Owner owner;
 
 		@Override
 		public Builder<T> setOffered(Commodity offered) {
@@ -177,8 +186,14 @@ public class ExchangeableMock implements Exchangeable {
 		}
 
 		@Override
+		public Builder<T> setOwner(Owner owner) {
+			this.owner = owner;
+			return this;
+		}
+
+		@Override
 		public Exchangeable build() {
-			return new ExchangeableMock(offered, offeredValue, required, requiredValue);
+			return new ExchangeableMock(offered, offeredValue, required, requiredValue, owner);
 		}
 	}
 }
