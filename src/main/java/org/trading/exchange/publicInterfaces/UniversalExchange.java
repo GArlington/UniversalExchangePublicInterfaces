@@ -12,6 +12,10 @@ import java.util.stream.Stream;
 public interface UniversalExchange extends Serializable {
 	String getName();
 
+	default boolean isAutoMatching() {
+		return true;
+	}
+
 	/**
 	 * Get all commodities currently handled by the Exchange
 	 */
@@ -67,6 +71,13 @@ public interface UniversalExchange extends Serializable {
 		if (location == null) return getMarkets();
 		return getMarkets().stream().filter(market -> market.getLocation().equals(location))
 				.collect(Collectors.toList());
+	}
+
+	/**
+	 * Get Market by Id
+	 */
+	default Market getMarket(String id) {
+		return getMarkets().stream().filter(ma -> ma.getId().equals(id)).findFirst().get();
 	}
 
 	/**

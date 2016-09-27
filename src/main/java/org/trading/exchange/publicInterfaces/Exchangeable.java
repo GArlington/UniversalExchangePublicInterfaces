@@ -100,7 +100,11 @@ public interface Exchangeable extends PreProcessable, Processable, PostProcessab
 		int result;
 		result = getOffered().compareTo(exchangeable.getOffered());
 		if (result == 0) result = getRequired().compareTo(exchangeable.getRequired());
-		if (result == 0) result = getExchangeRate().compareTo(exchangeable.getExchangeRate());
+		if (result == 0) {
+			@SuppressWarnings("unchecked")
+			int temp = getExchangeRate().compareTo(exchangeable.getExchangeRate());
+			result = temp;
+		}
 		return result;
 	}
 
