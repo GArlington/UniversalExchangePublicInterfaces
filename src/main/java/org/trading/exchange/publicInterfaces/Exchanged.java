@@ -7,10 +7,12 @@ import java.util.Collection;
  * Created by GArlington.
  */
 public interface Exchanged extends Serializable {
-	Owner getOwner();
+	default Owner getOwner() {
+		return getExchangeable() != null ? getExchangeable().getOwner() : null;
+	}
 
 	default boolean isOwned(Owner owner) {
-		return getExchangeable().isOwned(owner);
+		return getExchangeable() != null && getExchangeable().isOwned(owner);
 	}
 
 	Exchangeable getExchangeable();
