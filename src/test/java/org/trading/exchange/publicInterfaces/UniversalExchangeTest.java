@@ -29,12 +29,7 @@ public class UniversalExchangeTest {
 
 			@Override
 			public Owner getOwner() {
-				return new Owner() {
-					@Override
-					public String getId() {
-						return null;
-					}
-				};
+				return () -> null;
 			}
 
 			@Override
@@ -50,6 +45,7 @@ public class UniversalExchangeTest {
 				return market;
 			}
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public Market open(Market market) throws IllegalStateException, InvalidParameterException {
 				if (!((Collection<Market>) getMarkets()).add(validate(market))) {
