@@ -27,6 +27,10 @@ public interface Market extends Serializable {
 		return getOwner().equals(owner);
 	}
 
+	default boolean isAutoMatching() {
+		return true;
+	}
+
 	default Collection<? extends Exchangeable> getOrders(Exchangeable.State state) {
 		return getOrders().stream()
 				.filter(order -> (state.equals(order.getExchangeableState())))
@@ -80,5 +84,7 @@ public interface Market extends Serializable {
 		Builder<T> accept(Exchangeable exchangeable);
 
 		Builder<T> setOwner(Owner owner);
+
+		Builder<T> setAutoMatching(boolean autoMatching);
 	}
 }

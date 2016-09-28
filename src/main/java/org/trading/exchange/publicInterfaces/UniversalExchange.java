@@ -83,7 +83,7 @@ public interface UniversalExchange extends Serializable {
 	 * Get Market by Id
 	 */
 	default Market getMarket(String id) {
-		return getMarkets().stream().filter(ma -> ma.getId().equals(id)).findFirst().get();
+		return getMarkets().stream().filter(market -> market.getId().equals(id)).findFirst().get();
 	}
 
 	/**
