@@ -8,14 +8,14 @@ import java.util.Collection;
  */
 public interface Exchanged extends Serializable {
 	default Owner getOwner() {
-		return getExchangeable() != null ? getExchangeable().getOwner() : null;
+		return getExchangeOffer() != null ? getExchangeOffer().getOwner() : null;
 	}
 
 	default boolean isOwned(Owner owner) {
-		return getExchangeable() != null && getExchangeable().isOwned(owner);
+		return getExchangeOffer() != null && getExchangeOffer().isOwned(owner);
 	}
 
-	Exchangeable getExchangeable();
+	ExchangeOffer getExchangeOffer();
 
-	Collection<? extends Exchangeable> getMatchedExchangeables();
+	Collection<? extends ExchangeOffer> getMatchedExchangeOffers();
 }

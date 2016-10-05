@@ -7,7 +7,7 @@ import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
  * Created by GArlington.
  */
 public class UniversalExchangeTest {
-	UniversalExchange victim;
+	private UniversalExchange victim;
 
 	@Before
 	public void setup() {
@@ -60,22 +60,22 @@ public class UniversalExchangeTest {
 			}
 
 			@Override
-			public Exchangeable validate(Exchangeable exchangeable) throws InvalidParameterException {
+			public ExchangeOffer validate(ExchangeOffer exchangeOffer) throws InvalidParameterException {
 				return null;
 			}
 
 			@Override
-			public Exchangeable accept(Exchangeable exchangeable) throws InvalidParameterException {
+			public ExchangeOffer accept(ExchangeOffer exchangeOffer, Market market) throws InvalidParameterException {
 				return null;
 			}
 
 			@Override
-			public Collection<? extends Exchangeable> getMatching(Exchangeable exchangeable) {
+			public Collection<? extends ExchangeOffer> getMatching(ExchangeOffer exchangeOffer, Market market) {
 				return null;
 			}
 
 			@Override
-			public Exchanged match(Exchangeable exchangeable, Exchangeable... exchangeables)
+			public Exchanged match(ExchangeOffer exchangeOffer, Market market, ExchangeOffer... exchangeOffers)
 					throws InvalidParameterException, IllegalStateException {
 				return null;
 			}
@@ -149,13 +149,24 @@ public class UniversalExchangeTest {
 	}
 
 	@Test
-	public void getMarketsByExchangeable() throws Exception {
-		Exchangeable exchangeable = mock(Exchangeable.class);
+	public void getMarketById() throws Exception {
+		String id = "thisId";
 		Market market = mock(Market.class);
-		doReturn(true).when(market).validate(exchangeable);
+		doReturn(id).when(market).getId();
+
+		assertNull(victim.getMarket(id));
+		victim.open(market);
+		assertNotNull(victim.getMarket(id));
+	}
+
+	@Test
+	public void getMarketsByExchangeable() throws Exception {
+		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
+		Market market = mock(Market.class);
+		doReturn(true).when(market).validate(exchangeOffer);
 		victim.open(market);
 
-		assertEquals(1, victim.getMarkets(exchangeable).size());
+		assertEquals(1, victim.getMarkets(exchangeOffer).size());
 	}
 
 	@Test

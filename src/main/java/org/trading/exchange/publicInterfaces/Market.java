@@ -19,7 +19,7 @@ public interface Market extends Serializable {
 
 	Commodity getRequired();
 
-	Collection<? extends Exchangeable> getOrders();
+	Collection<? extends ExchangeOffer> getOrders();
 
 	Owner getOwner();
 
@@ -31,17 +31,18 @@ public interface Market extends Serializable {
 		return true;
 	}
 
-	default Collection<? extends Exchangeable> getOrders(Exchangeable.State state) {
+	default Collection<? extends ExchangeOffer> getOrders(ExchangeOffer.State state) {
+		if (state == null) return getOrders();
 		return getOrders().stream()
 				.filter(order -> (state.equals(order.getExchangeableState())))
 				.sorted()
 				.collect(Collectors.toList());
 	}
 
-	boolean accept(Exchangeable exchangeable);
+	boolean accept(ExchangeOffer exchangeOffer);
 
 	default boolean validate() throws IllegalStateException {
-		if (!validateLocation(getLocation())) {
+		if (!validate(getLocation())) {
 			throw new IllegalStateException(this + " configuration is invalid. "
 //                    + getLocation() + " can't handle offered:" + getOffered() + " or required:" + getRequired()
 			);
@@ -54,20 +55,24 @@ public interface Market extends Serializable {
 		return true;
 	}
 
-	default boolean validateLocation(Location location) {
+	default boolean validate(Location location) {
 		return location.checkCommodity(getOffered()) && location.checkCommodity(getRequired());
 	}
 
-	default boolean validate(Exchangeable exchangeable) {
-		return isMarket(exchangeable) || isCounter(exchangeable);
+	default boolean validate(ExchangeOffer exchangeOffer) {
+		return isMarket(exchangeOffer) || isCounter(exchangeOffer);
 	}
 
-	default boolean isMarket(Exchangeable exchangeable) {
-		return getOffered().equals(exchangeable.getOffered()) && getRequired().equals(exchangeable.getRequired());
+	default boolean isMarket(ExchangeOffer exchangeOffer) {
+		return getOffered().equals(exchangeOffer.getOffered()) && getRequired().equals(exchangeOffer.getRequired());
 	}
 
-	default boolean isCounter(Exchangeable exchangeable) {
-		return getOffered().equals(exchangeable.getRequired()) && getRequired().equals(exchangeable.getOffered());
+	default boolean isCounter(ExchangeOffer exchangeOffer) {
+		return getOffered().equals(exchangeOffer.getRequired()) && getRequired().equals(exchangeOffer.getOffered());
+	}
+
+	default boolean equals(Market market) {
+		return getId().equals(market.getId());
 	}
 
 	interface Builder<T> extends org.processing.Builder {
@@ -81,7 +86,7 @@ public interface Market extends Serializable {
 
 		Builder<T> setRequired(Commodity required);
 
-		Builder<T> accept(Exchangeable exchangeable);
+		Builder<T> accept(ExchangeOffer exchangeOffer);
 
 		Builder<T> setOwner(Owner owner);
 

@@ -9,8 +9,8 @@ import java.io.Serializable;
 /**
  * Created by GArlington.
  */
-public interface Exchangeable extends PreProcessable, Processable, PostProcessable, Comparable {
-	static Exchangeable validate(Exchangeable check) throws IllegalStateException {
+public interface ExchangeOffer extends PreProcessable, Processable, PostProcessable, Comparable {
+	static ExchangeOffer validate(ExchangeOffer check) throws IllegalStateException {
 		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() > 0L &&
 				check.getRequiredValue() > 0L) {
 			check.setExchangeableState(State.VALIDATED);
@@ -59,35 +59,35 @@ public interface Exchangeable extends PreProcessable, Processable, PostProcessab
 	Comparable getInverseExchangeRate();
 
 	/**
-	 * Validate Exchangeable
+	 * Validate ExchangeOffer
 	 */
-	default Exchangeable validate() throws IllegalStateException {
+	default ExchangeOffer validate() throws IllegalStateException {
 		return validate(this);
 	}
 
 	/**
-	 * Check if the Exchangeable is fully matched and is ready for further processing
+	 * Check if the ExchangeOffer is fully matched and is ready for further processing
 	 */
 	boolean isFullyMatched();
 
 	/**
-	 * Check if the Exchangeable passed as parameter will match (at least part fulfill) this Exchangeable
+	 * Check if the ExchangeOffer passed as parameter will match (at least part fulfill) this ExchangeOffer
 	 *
-	 * @param exchangeable
+	 * @param exchangeOffer
 	 */
-	default boolean isMatching(Exchangeable exchangeable) {
-		return getOffered().equals(exchangeable.getRequired()) && getRequired().equals(exchangeable.getOffered());
+	default boolean isMatching(ExchangeOffer exchangeOffer) {
+		return getOffered().equals(exchangeOffer.getRequired()) && getRequired().equals(exchangeOffer.getOffered());
 	}
 
 	/**
-	 * Process this Exchangeable and matched Exchangeable passed as parameter
+	 * Process this ExchangeOffer and matched ExchangeOffer passed as parameter
 	 *
-	 * This method will change both this Exchangeable and Exchangeable passed as parameter if they match
+	 * This method will change both this ExchangeOffer and ExchangeOffer passed as parameter if they match
 	 *
-	 * @param exchangeable
-	 * @return processed Exchangeable that was passed as parameter
+	 * @param exchangeOffer
+	 * @return processed ExchangeOffer that was passed as parameter
 	 */
-	Exchangeable match(Exchangeable exchangeable);
+	ExchangeOffer match(ExchangeOffer exchangeOffer);
 
 	Exchanged getExchanged();
 
@@ -101,14 +101,14 @@ public interface Exchangeable extends PreProcessable, Processable, PostProcessab
 	default int compareTo(Object object) {
 		if (this.equals(object)) return 0;
 		if (object == null || getClass() != object.getClass()) return 1;
-		Exchangeable exchangeable = (Exchangeable) object;
+		ExchangeOffer exchangeOffer = (ExchangeOffer) object;
 
 		int result;
-		result = getOffered().compareTo(exchangeable.getOffered());
-		if (result == 0) result = getRequired().compareTo(exchangeable.getRequired());
+		result = getOffered().compareTo(exchangeOffer.getOffered());
+		if (result == 0) result = getRequired().compareTo(exchangeOffer.getRequired());
 		if (result == 0) {
 			@SuppressWarnings("unchecked")
-			int temp = getExchangeRate().compareTo(exchangeable.getExchangeRate());
+			int temp = getExchangeRate().compareTo(exchangeOffer.getExchangeRate());
 			result = temp;
 		}
 		return result;

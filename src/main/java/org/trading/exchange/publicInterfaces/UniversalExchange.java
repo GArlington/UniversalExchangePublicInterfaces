@@ -63,11 +63,11 @@ public interface UniversalExchange extends Serializable {
 	Collection<? extends Market> getMarkets();
 
 	/**
-	 * Get all open markets suitable for Exchangeable
+	 * Get all open markets suitable for ExchangeOffer
 	 */
-	default Collection<? extends Market> getMarkets(Exchangeable exchangeable) {
-		if (exchangeable == null) return getMarkets();
-		return getMarkets().stream().filter(market -> market.validate(exchangeable)).collect(Collectors.toList());
+	default Collection<? extends Market> getMarkets(ExchangeOffer exchangeOffer) {
+		if (exchangeOffer == null) return getMarkets();
+		return getMarkets().stream().filter(market -> market.validate(exchangeOffer)).collect(Collectors.toList());
 	}
 
 	/**
@@ -83,7 +83,7 @@ public interface UniversalExchange extends Serializable {
 	 * Get Market by Id
 	 */
 	default Market getMarket(String id) {
-		return getMarkets().stream().filter(market -> market.getId().equals(id)).findFirst().get();
+		return getMarkets().stream().filter(market -> market.getId().equals(id)).findFirst().orElse(null);
 	}
 
 	/**
@@ -112,38 +112,40 @@ public interface UniversalExchange extends Serializable {
 	boolean close(Market market) throws IllegalStateException;
 
 	/**
-	 * Validate Exchangeable, check if Exchangeable can be handled by the Exchange
+	 * Validate ExchangeOffer, check if ExchangeOffer can be handled by the Exchange
 	 *
-	 * @param exchangeable
+	 * @param exchangeOffer
+	 * @throws InvalidParameterException - should be thrown when the ExchangeOffer can't be handled by the Exchange
+	 */
+	ExchangeOffer validate(ExchangeOffer exchangeOffer) throws InvalidParameterException;
+
+	/**
+	 * Accept Exchangeable, should invoke {@link #validate(ExchangeOffer)} and accept/process the Exchangeable
+	 *
+	 * @param exchangeOffer
 	 * @throws InvalidParameterException - should be thrown when the Exchangeable can't be handled by the Exchange
 	 */
-	Exchangeable validate(Exchangeable exchangeable) throws InvalidParameterException;
+	ExchangeOffer accept(ExchangeOffer exchangeOffer, Market market) throws InvalidParameterException;
 
 	/**
-	 * Accept Exchangeable, should invoke {@link #validate(Exchangeable)} and accept/process the Exchangeable
+	 * Get Exchangeables which will match the ExchangeOffer
 	 *
-	 * @param exchangeable
-	 * @throws InvalidParameterException - should be thrown when the Exchangeable can't be handled by the Exchange
+	 * @param exchangeOffer
+	 * @param market
 	 */
-	Exchangeable accept(Exchangeable exchangeable) throws InvalidParameterException;
+	Collection<? extends ExchangeOffer> getMatching(ExchangeOffer exchangeOffer, Market market);
 
 	/**
-	 * Get Exchangeables which will match the Exchangeable
+	 * (Manually) match the ExchangeOffer with matching Exchangeables (these should be a result of invocation of
+	 * {@link #getMatching(ExchangeOffer, Market)})
 	 *
-	 * @param exchangeable
-	 */
-	Collection<? extends Exchangeable> getMatching(Exchangeable exchangeable);
-
-	/**
-	 * (Manually) match the Exchangeable with matching Exchangeables (these should be a result of invocation of
-	 * {@link #getMatching(Exchangeable)})
-	 *
-	 * @param exchangeable
-	 * @param exchangeables
+	 * @param exchangeOffer
+	 * @param market
+	 * @param exchangeOffers
 	 * @return Exchanged
 	 * @throws InvalidParameterException
 	 * @throws IllegalStateException
 	 */
-	Exchanged match(Exchangeable exchangeable, Exchangeable... exchangeables)
+	Exchanged match(ExchangeOffer exchangeOffer, Market market, ExchangeOffer... exchangeOffers)
 			throws InvalidParameterException, IllegalStateException;
 }

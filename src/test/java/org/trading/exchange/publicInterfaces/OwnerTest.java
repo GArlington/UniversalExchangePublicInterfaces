@@ -12,7 +12,7 @@ import static org.mockito.Mockito.mock;
  * Created by GArlington.
  */
 public class OwnerTest {
-	Owner victim;
+	private Owner victim;
 
 	@Before
 	public void setUp() throws Exception {
@@ -39,10 +39,10 @@ public class OwnerTest {
 
 	@Test
 	public void isOwnerExchangeable() throws Exception {
-		Exchangeable exchangeable = mock(Exchangeable.class);
-		doReturn(true).when(exchangeable).isOwned(victim);
+		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
+		doReturn(true).when(exchangeOffer).isOwned(victim);
 
-		assertEquals(true, victim.isOwner(exchangeable));
+		assertEquals(true, victim.isOwner(exchangeOffer));
 	}
 
 	@Test

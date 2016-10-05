@@ -5,7 +5,7 @@ import org.processing.Processable;
 /**
  * Created by GArlington.
  */
-public class ExchangeableMock implements Exchangeable {
+class ExchangeOfferMock implements ExchangeOffer {
 	private final Object LOCK = new Object();
 	private final Commodity offered;
 	private final long originalOfferedValue;
@@ -18,16 +18,16 @@ public class ExchangeableMock implements Exchangeable {
 	private long matchedOfferedValue;
 	private long requiredValue;
 	private long matchedRequiredValue;
-	private Exchangeable.State exchangeableState = State.INITIALISED;
+	private ExchangeOffer.State exchangeableState = State.INITIALISED;
 	private Processable.State processState = Processable.State.INITIALISED;
 	private Exchanged exchanged;
 
-	public ExchangeableMock(org.trading.exchange.publicInterfaces.Exchangeable exchangeable) {
-		this(exchangeable.getOffered(), exchangeable.getOfferedValue(), exchangeable.getRequired(),
-				exchangeable.getRequiredValue(), exchangeable.getOwner());
+	public ExchangeOfferMock(ExchangeOffer exchangeOffer) {
+		this(exchangeOffer.getOffered(), exchangeOffer.getOfferedValue(), exchangeOffer.getRequired(),
+				exchangeOffer.getRequiredValue(), exchangeOffer.getOwner());
 	}
 
-	public ExchangeableMock(Commodity offered, long offeredValue, Commodity required, long requiredValue, Owner
+	ExchangeOfferMock(Commodity offered, long offeredValue, Commodity required, long requiredValue, Owner
 			owner) {
 		this.offered = offered;
 		this.originalOfferedValue = this.offeredValue = offeredValue;
@@ -39,7 +39,7 @@ public class ExchangeableMock implements Exchangeable {
 		initialise();
 	}
 
-	public static Builder<Exchangeable> getBuilder() {
+	public static Builder<ExchangeOffer> getBuilder() {
 		return new Builder<>();
 	}
 
@@ -84,8 +84,8 @@ public class ExchangeableMock implements Exchangeable {
 	}
 
 	@Override
-	public Exchangeable match(Exchangeable exchangeable) {
-		return null;
+	public ExchangeOffer match(ExchangeOffer exchangeOffer) {
+		return exchangeOffer;
 	}
 
 	@Override
@@ -99,12 +99,12 @@ public class ExchangeableMock implements Exchangeable {
 	}
 
 	@Override
-	public Exchangeable.State getExchangeableState() {
+	public ExchangeOffer.State getExchangeableState() {
 		return exchangeableState;
 	}
 
 	@Override
-	public void setExchangeableState(Exchangeable.State state) {
+	public void setExchangeableState(ExchangeOffer.State state) {
 		if (exchangeableState.precedes(state)) {
 			this.exchangeableState = state;
 		}
@@ -138,7 +138,7 @@ public class ExchangeableMock implements Exchangeable {
 
 	@Override
 	public String toString() {
-		return "ExchangeableMock{" +
+		return "ExchangeOfferMock{" +
 				"exchangeableState=" + exchangeableState +
 				", processState=" + processState +
 				", offered=" + offered +
@@ -154,7 +154,7 @@ public class ExchangeableMock implements Exchangeable {
 				'}' + '\n';
 	}
 
-	public static class Builder<T> implements org.trading.exchange.publicInterfaces.Exchangeable.Builder {
+	public static class Builder<T> implements ExchangeOffer.Builder {
 		private Commodity offered;
 		private Commodity required;
 		private long offeredValue;
@@ -192,8 +192,8 @@ public class ExchangeableMock implements Exchangeable {
 		}
 
 		@Override
-		public Exchangeable build() {
-			return new ExchangeableMock(offered, offeredValue, required, requiredValue, owner);
+		public ExchangeOffer build() {
+			return new ExchangeOfferMock(offered, offeredValue, required, requiredValue, owner);
 		}
 	}
 }

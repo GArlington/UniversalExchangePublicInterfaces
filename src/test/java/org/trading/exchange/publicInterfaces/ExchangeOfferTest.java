@@ -10,11 +10,11 @@ import static org.mockito.Mockito.mock;
 /**
  * Created by GArlington.
  */
-public class ExchangeableTest {
-	Exchangeable victim;
-	Commodity offered;
-	Commodity required;
-	Owner owner;
+public class ExchangeOfferTest {
+	private ExchangeOffer victim;
+	private Commodity offered;
+	private Commodity required;
+	private Owner owner;
 
 	@Before
 	public void setup() {
@@ -25,8 +25,9 @@ public class ExchangeableTest {
 		doReturn(1).when(offered).compareTo(required);
 		doReturn(-1).when(required).compareTo(offered);
 		owner = mock(Owner.class);
+		doReturn("thisId").when(owner).getId();
 		doReturn(true).when(owner).equals(owner);
-		victim = new ExchangeableMock(offered, 1L, required, 2L, owner);
+		victim = new ExchangeOfferMock(offered, 1L, required, 2L, owner);
 	}
 
 	@Test
@@ -36,21 +37,21 @@ public class ExchangeableTest {
 
 	@Test
 	public void validateStatic() throws Exception {
-		assertEquals(victim, Exchangeable.validate(victim));
+		assertEquals(victim, ExchangeOffer.validate(victim));
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void validateStaticInvalid() throws Exception {
-		Exchangeable test = mock(Exchangeable.class);
-		assertEquals(victim, Exchangeable.validate(test));
+		ExchangeOffer test = mock(ExchangeOffer.class);
+		assertEquals(victim, ExchangeOffer.validate(test));
 	}
 
 	@Test
 	public void isMatching() throws Exception {
-		Exchangeable exchangeable = mock(Exchangeable.class);
-		doReturn(required).when(exchangeable).getOffered();
-		doReturn(offered).when(exchangeable).getRequired();
-		assertEquals(true, victim.isMatching(exchangeable));
+		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
+		doReturn(required).when(exchangeOffer).getOffered();
+		doReturn(offered).when(exchangeOffer).getRequired();
+		assertEquals(true, victim.isMatching(exchangeOffer));
 	}
 
 	@Test
@@ -60,14 +61,14 @@ public class ExchangeableTest {
 
 	@Test
 	public void compareTo() throws Exception {
-		Exchangeable exchangeable =
-				new ExchangeableMock(victim.getOffered(), victim.getOfferedValue(), victim.getRequired(),
+		ExchangeOffer exchangeOffer =
+				new ExchangeOfferMock(victim.getOffered(), victim.getOfferedValue(), victim.getRequired(),
 						victim.getRequiredValue(), owner);
-		assertEquals(0, victim.compareTo(exchangeable));
-		exchangeable =
-				new ExchangeableMock(victim.getOffered(), victim.getOfferedValue(), victim.getOffered(),
+		assertEquals(0, victim.compareTo(exchangeOffer));
+		exchangeOffer =
+				new ExchangeOfferMock(victim.getOffered(), victim.getOfferedValue(), victim.getOffered(),
 						victim.getRequiredValue(), owner);
-		assertEquals(-1, victim.compareTo(exchangeable));
+		assertEquals(-1, victim.compareTo(exchangeOffer));
 	}
 
 }
