@@ -34,7 +34,7 @@ public interface Market extends Serializable {
 	default Collection<? extends ExchangeOffer> getOrders(ExchangeOffer.State state) {
 		if (state == null) return getOrders();
 		return getOrders().stream()
-				.filter(order -> (state.equals(order.getExchangeableState())))
+				.filter(order -> (state.equals(order.getState())))
 				.sorted()
 				.collect(Collectors.toList());
 	}

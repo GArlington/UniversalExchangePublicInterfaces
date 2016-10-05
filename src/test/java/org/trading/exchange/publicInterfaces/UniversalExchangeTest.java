@@ -60,7 +60,8 @@ public class UniversalExchangeTest {
 			}
 
 			@Override
-			public ExchangeOffer validate(ExchangeOffer exchangeOffer) throws InvalidParameterException {
+			public ExchangeOffer validate(ExchangeOffer exchangeOffer, Market market) throws
+					InvalidParameterException {
 				return null;
 			}
 
@@ -160,7 +161,7 @@ public class UniversalExchangeTest {
 	}
 
 	@Test
-	public void getMarketsByExchangeable() throws Exception {
+	public void getMarketsByExchangeOffer() throws Exception {
 		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
 		Market market = mock(Market.class);
 		doReturn(true).when(market).validate(exchangeOffer);

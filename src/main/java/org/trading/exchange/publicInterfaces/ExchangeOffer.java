@@ -13,7 +13,7 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 	static ExchangeOffer validate(ExchangeOffer check) throws IllegalStateException {
 		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() > 0L &&
 				check.getRequiredValue() > 0L) {
-			check.setExchangeableState(State.VALIDATED);
+			check.setState(State.VALIDATED);
 			return check;
 		} else {
 			throw new IllegalStateException("All values are mandatory."
@@ -93,9 +93,9 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 
 	void setExchanged(Exchanged exchanged);
 
-	State getExchangeableState();
+	State getState();
 
-	void setExchangeableState(State state);
+	void setState(State state);
 
 	@Override
 	default int compareTo(Object object) {

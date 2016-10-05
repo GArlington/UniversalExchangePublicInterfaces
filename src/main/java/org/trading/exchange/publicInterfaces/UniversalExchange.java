@@ -117,18 +117,19 @@ public interface UniversalExchange extends Serializable {
 	 * @param exchangeOffer
 	 * @throws InvalidParameterException - should be thrown when the ExchangeOffer can't be handled by the Exchange
 	 */
-	ExchangeOffer validate(ExchangeOffer exchangeOffer) throws InvalidParameterException;
+	ExchangeOffer validate(ExchangeOffer exchangeOffer, Market market) throws InvalidParameterException;
 
 	/**
-	 * Accept Exchangeable, should invoke {@link #validate(ExchangeOffer)} and accept/process the Exchangeable
+	 * Accept ExchangeOffer, should invoke {@link #validate(ExchangeOffer, Market)} and accept/process the
+	 * ExchangeOffer
 	 *
 	 * @param exchangeOffer
-	 * @throws InvalidParameterException - should be thrown when the Exchangeable can't be handled by the Exchange
+	 * @throws InvalidParameterException - should be thrown when the ExchangeOffer can't be handled by the Exchange
 	 */
 	ExchangeOffer accept(ExchangeOffer exchangeOffer, Market market) throws InvalidParameterException;
 
 	/**
-	 * Get Exchangeables which will match the ExchangeOffer
+	 * Get ExchangeOffers which will match the ExchangeOffer
 	 *
 	 * @param exchangeOffer
 	 * @param market
@@ -136,7 +137,7 @@ public interface UniversalExchange extends Serializable {
 	Collection<? extends ExchangeOffer> getMatching(ExchangeOffer exchangeOffer, Market market);
 
 	/**
-	 * (Manually) match the ExchangeOffer with matching Exchangeables (these should be a result of invocation of
+	 * (Manually) match the ExchangeOffer with matching ExchangeOffers (these should be a result of invocation of
 	 * {@link #getMatching(ExchangeOffer, Market)})
 	 *
 	 * @param exchangeOffer

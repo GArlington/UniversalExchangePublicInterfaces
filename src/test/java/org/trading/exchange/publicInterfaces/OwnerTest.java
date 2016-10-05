@@ -38,7 +38,7 @@ public class OwnerTest {
 	}
 
 	@Test
-	public void isOwnerExchangeable() throws Exception {
+	public void isOwnerExchangeOffer() throws Exception {
 		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
 		doReturn(true).when(exchangeOffer).isOwned(victim);
 

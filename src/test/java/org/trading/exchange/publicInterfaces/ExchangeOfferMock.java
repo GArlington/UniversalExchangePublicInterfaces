@@ -18,7 +18,7 @@ class ExchangeOfferMock implements ExchangeOffer {
 	private long matchedOfferedValue;
 	private long requiredValue;
 	private long matchedRequiredValue;
-	private ExchangeOffer.State exchangeableState = State.INITIALISED;
+	private ExchangeOffer.State state = State.INITIALISED;
 	private Processable.State processState = Processable.State.INITIALISED;
 	private Exchanged exchanged;
 
@@ -99,14 +99,14 @@ class ExchangeOfferMock implements ExchangeOffer {
 	}
 
 	@Override
-	public ExchangeOffer.State getExchangeableState() {
-		return exchangeableState;
+	public ExchangeOffer.State getState() {
+		return state;
 	}
 
 	@Override
-	public void setExchangeableState(ExchangeOffer.State state) {
-		if (exchangeableState.precedes(state)) {
-			this.exchangeableState = state;
+	public void setState(ExchangeOffer.State state) {
+		if (this.state.precedes(state)) {
+			this.state = state;
 		}
 	}
 
@@ -139,7 +139,7 @@ class ExchangeOfferMock implements ExchangeOffer {
 	@Override
 	public String toString() {
 		return "ExchangeOfferMock{" +
-				"exchangeableState=" + exchangeableState +
+				"state=" + state +
 				", processState=" + processState +
 				", offered=" + offered +
 				", offeredValue=" + offeredValue +
