@@ -13,6 +13,12 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 	static ExchangeOffer validate(ExchangeOffer check) throws IllegalStateException {
 		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() > 0L &&
 				check.getRequiredValue() > 0L) {
+			if (check.getOffered() == check.getRequired()) {
+				throw new IllegalStateException(
+						"Offered " + check.getOffered() + " has to be different from required " + check.getRequired()
+//					+ check
+				);
+			}
 			check.setState(State.VALIDATED);
 			return check;
 		} else {
@@ -57,6 +63,11 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 	 * Get inverse exchange rate
 	 */
 	Comparable getInverseExchangeRate();
+
+	/**
+	 * Get exchange rate precision
+	 */
+	int getExchangeRatePrecision();
 
 	/**
 	 * Validate ExchangeOffer
@@ -156,5 +167,7 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 		Builder<T> setRequiredValue(long requiredValue);
 
 		Builder<T> setOwner(Owner owner);
+
+		Builder<T> setExchangeRatePrecision(int exchangeRatePrecision);
 	}
 }

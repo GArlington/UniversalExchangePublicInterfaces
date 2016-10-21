@@ -8,8 +8,6 @@ import java.io.Serializable;
 public interface Commodity extends Serializable, Comparable {
 	/**
 	 * This must be a unique identifier
-	 *
-	 * @return
 	 */
 	String getId();
 
@@ -23,6 +21,14 @@ public interface Commodity extends Serializable, Comparable {
 
 	long getPriceToQuantityRatio();
 
+	default long getValue(double qty) {
+		return (long) (qty * getPriceToQuantityRatio());
+	}
+
+	default String getValue(long value) {
+		return "" + (value / getPriceToQuantityRatio()) + getDecimalSeparator() + (value % getPriceToQuantityRatio());
+	}
+
 	/**
 	 * Global commodities are currencies, they have a unique property of portability
 	 * as money are not Location specific
@@ -34,6 +40,8 @@ public interface Commodity extends Serializable, Comparable {
 	default boolean isOwned(Owner owner) {
 		return getOwner().equals(owner);
 	}
+
+	char getDecimalSeparator();
 
 	@Override
 	default int compareTo(Object object) {

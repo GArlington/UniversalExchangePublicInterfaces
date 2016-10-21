@@ -19,7 +19,7 @@ public interface Market extends Serializable {
 
 	Commodity getRequired();
 
-	Collection<? extends ExchangeOffer> getOrders();
+	Collection<? extends ExchangeOffer> getOffers();
 
 	Owner getOwner();
 
@@ -31,9 +31,9 @@ public interface Market extends Serializable {
 		return true;
 	}
 
-	default Collection<? extends ExchangeOffer> getOrders(ExchangeOffer.State state) {
-		if (state == null) return getOrders();
-		return getOrders().stream()
+	default Collection<? extends ExchangeOffer> getOffers(ExchangeOffer.State state) {
+		if (state == null) return getOffers();
+		return getOffers().stream()
 				.filter(order -> (state.equals(order.getState())))
 				.sorted()
 				.collect(Collectors.toList());
@@ -47,9 +47,9 @@ public interface Market extends Serializable {
 //                    + getLocation() + " can't handle offered:" + getOffered() + " or required:" + getRequired()
 			);
 		}
-		if (!getOrders().stream().allMatch(this::validate)) {
+		if (!getOffers().stream().allMatch(this::validate)) {
 			throw new IllegalStateException(this + " configuration is invalid. "
-//                    + getOrders() + " don't match offered:" + getOffered() + " or required:" + getRequired()
+//                    + getOffers() + " don't match offered:" + getOffered() + " or required:" + getRequired()
 			);
 		}
 		return true;

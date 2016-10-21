@@ -21,14 +21,16 @@ class ExchangeOfferMock implements ExchangeOffer {
 	private ExchangeOffer.State state = State.INITIALISED;
 	private Processable.State processState = Processable.State.INITIALISED;
 	private Exchanged exchanged;
+	private int exchangeRatePrecision;
 
 	public ExchangeOfferMock(ExchangeOffer exchangeOffer) {
 		this(exchangeOffer.getOffered(), exchangeOffer.getOfferedValue(), exchangeOffer.getRequired(),
-				exchangeOffer.getRequiredValue(), exchangeOffer.getOwner());
+				exchangeOffer.getRequiredValue(), exchangeOffer.getOwner(), exchangeOffer.getExchangeRatePrecision());
 	}
 
-	ExchangeOfferMock(Commodity offered, long offeredValue, Commodity required, long requiredValue, Owner
-			owner) {
+	ExchangeOfferMock(Commodity offered, long offeredValue, Commodity required, long requiredValue, Owner owner,
+					  int exchangeRatePrecision) {
+		this.exchangeRatePrecision = exchangeRatePrecision;
 		this.offered = offered;
 		this.originalOfferedValue = this.offeredValue = offeredValue;
 		this.required = required;
@@ -76,6 +78,11 @@ class ExchangeOfferMock implements ExchangeOffer {
 	@Override
 	public Comparable getInverseExchangeRate() {
 		return inverseExchangeRate;
+	}
+
+	@Override
+	public int getExchangeRatePrecision() {
+		return exchangeRatePrecision;
 	}
 
 	@Override
@@ -160,6 +167,7 @@ class ExchangeOfferMock implements ExchangeOffer {
 		private long offeredValue;
 		private long requiredValue;
 		private Owner owner;
+		private int exchangeRatePrecision = 5;
 
 		@Override
 		public Builder<T> setOffered(Commodity offered) {
@@ -192,8 +200,14 @@ class ExchangeOfferMock implements ExchangeOffer {
 		}
 
 		@Override
+		public Builder<T> setExchangeRatePrecision(int exchangeRatePrecision) {
+			this.exchangeRatePrecision = exchangeRatePrecision;
+			return this;
+		}
+
+		@Override
 		public ExchangeOffer build() {
-			return new ExchangeOfferMock(offered, offeredValue, required, requiredValue, owner);
+			return new ExchangeOfferMock(offered, offeredValue, required, requiredValue, owner, exchangeRatePrecision);
 		}
 	}
 }

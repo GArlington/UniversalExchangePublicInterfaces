@@ -29,6 +29,8 @@ public class MarketTest {
 		doReturn(true).when(location).checkCommodity(required);
 
 		victim = new Market() {
+			private final Collection<? extends ExchangeOffer> offers = new LinkedList<>();
+
 			@Override
 			public String getId() {
 				return null;
@@ -54,9 +56,8 @@ public class MarketTest {
 				return required;
 			}
 
-			@Override
-			public Collection<? extends ExchangeOffer> getOrders() {
-				return new LinkedList<>();
+			public Collection<? extends ExchangeOffer> getOffers() {
+				return offers;
 			}
 
 			@Override
@@ -66,15 +67,33 @@ public class MarketTest {
 
 			@Override
 			public boolean accept(ExchangeOffer exchangeOffer) {
-				return false;
+				@SuppressWarnings("unchecked")
+				Collection<ExchangeOffer> offers = ((Collection<ExchangeOffer>) getOffers());
+				return offers.add(exchangeOffer);
 			}
 		};
 	}
 
 	@Test
-	public void getOrders() throws Exception {
-		Collection<? extends ExchangeOffer> result = victim.getOrders();
+	public void getOffers() throws Exception {
+		Collection<? extends ExchangeOffer> result = victim.getOffers();
 		assertEquals(0, result.size());
+		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
+		assertEquals(true, victim.accept(exchangeOffer));
+		result = victim.getOffers();
+		assertEquals(1, result.size());
+	}
+
+	@Test
+	public void getOffersByState() throws Exception {
+		Collection<? extends ExchangeOffer> result = victim.getOffers(ExchangeOffer.State.OPEN);
+		assertEquals(0, result.size());
+		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
+		doReturn(ExchangeOffer.State.OPEN).when(exchangeOffer).getState();
+		assertEquals(true, victim.accept(exchangeOffer));
+
+		result = victim.getOffers(ExchangeOffer.State.OPEN);
+		assertEquals(1, result.size());
 	}
 
 	@Test
