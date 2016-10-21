@@ -27,7 +27,8 @@ public class ExchangeOfferTest {
 		owner = mock(Owner.class);
 		doReturn("thisId").when(owner).getId();
 		doReturn(true).when(owner).equals(owner);
-		victim = new ExchangeOfferMock(offered, 1L, required, 2L, owner);
+		victim = ExchangeOfferMock.getBuilder().setOffered(offered).setOfferedValue(1L).setRequired(required)
+				.setRequiredValue(2L).setOwner(owner).build();
 	}
 
 	@Test
@@ -62,12 +63,16 @@ public class ExchangeOfferTest {
 	@Test
 	public void compareTo() throws Exception {
 		ExchangeOffer exchangeOffer =
-				new ExchangeOfferMock(victim.getOffered(), victim.getOfferedValue(), victim.getRequired(),
-						victim.getRequiredValue(), owner);
+				ExchangeOfferMock.getBuilder().setOffered(victim.getOffered()).setOfferedValue(victim
+						.getOfferedValue())
+						.setRequired(victim.getRequired()).setRequiredValue(victim.getRequiredValue()).setOwner(owner)
+						.build();
 		assertEquals(0, victim.compareTo(exchangeOffer));
 		exchangeOffer =
-				new ExchangeOfferMock(victim.getOffered(), victim.getOfferedValue(), victim.getOffered(),
-						victim.getRequiredValue(), owner);
+				ExchangeOfferMock.getBuilder().setOffered(victim.getOffered()).setOfferedValue(victim
+						.getOfferedValue())
+						.setRequired(victim.getOffered()).setRequiredValue(victim.getRequiredValue()).setOwner(owner)
+						.build();
 		assertEquals(-1, victim.compareTo(exchangeOffer));
 	}
 
