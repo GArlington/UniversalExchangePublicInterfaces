@@ -15,14 +15,15 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 				check.getRequiredValue() > 0L) {
 			if (check.getOffered() == check.getRequired()) {
 				throw new IllegalStateException(
-						"Offered " + check.getOffered() + " has to be different from required " + check.getRequired()
+						"Offered " + check.getOffered() + " has to be different from required " + check.getRequired() +
+								". "
 //					+ check
 				);
 			}
 			check.setState(State.VALIDATED);
 			return check;
 		} else {
-			throw new IllegalStateException("All values are mandatory."
+			throw new IllegalStateException("All values are mandatory. "
 //					+ check
 			);
 		}
@@ -140,7 +141,7 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 		final String name;
 
 		State(Processable.State state) {
-			this(state.ordinal(), state.name());
+			this(state.getOrdinal(), state.getName());
 		}
 
 		State(int ordinal, String name) {
@@ -148,12 +149,20 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 			this.name = name;
 		}
 
+		public int getOrdinal() {
+			return ordinal;
+		}
+
+		public String getName() {
+			return name;
+		}
+
 		public boolean precedes(State state) {
-			return ordinal < state.ordinal;
+			return getOrdinal() < state.getOrdinal();
 		}
 
 		public boolean succeeds(State state) {
-			return ordinal > state.ordinal;
+			return getOrdinal() > state.getOrdinal();
 		}
 	}
 

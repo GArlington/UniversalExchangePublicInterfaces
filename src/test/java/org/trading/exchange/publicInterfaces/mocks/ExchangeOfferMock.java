@@ -1,11 +1,15 @@
-package org.trading.exchange.publicInterfaces;
+package org.trading.exchange.publicInterfaces.mocks;
 
 import org.processing.Processable;
+import org.trading.exchange.publicInterfaces.Commodity;
+import org.trading.exchange.publicInterfaces.ExchangeOffer;
+import org.trading.exchange.publicInterfaces.Exchanged;
+import org.trading.exchange.publicInterfaces.Owner;
 
 /**
  * Created by GArlington.
  */
-class ExchangeOfferMock implements ExchangeOffer {
+public class ExchangeOfferMock implements ExchangeOffer {
 	private final Object LOCK = new Object();
 	private final Commodity offered;
 	private final long originalOfferedValue;
@@ -164,8 +168,8 @@ class ExchangeOfferMock implements ExchangeOffer {
 	public static class Builder<T> implements ExchangeOffer.Builder {
 		private Commodity offered;
 		private Commodity required;
-		private long offeredValue;
-		private long requiredValue;
+		private long offeredValue = -1;
+		private long requiredValue = -1;
 		private Owner owner;
 		private int exchangeRatePrecision = 5;
 

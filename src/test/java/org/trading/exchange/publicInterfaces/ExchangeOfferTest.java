@@ -2,6 +2,7 @@ package org.trading.exchange.publicInterfaces;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.trading.exchange.publicInterfaces.mocks.ExchangeOfferMock;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -43,21 +44,41 @@ public class ExchangeOfferTest {
 
 	@Test(expected = IllegalStateException.class)
 	public void validateStaticInvalid() throws Exception {
-		ExchangeOffer test = mock(ExchangeOffer.class);
-		assertEquals(victim, ExchangeOffer.validate(test));
+		ExchangeOffer exchangeOffer;
+		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required)
+				.setOwner(owner).build();
+		assertEquals(victim, ExchangeOffer.validate(exchangeOffer));
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void validateStaticInvalidOfferedEqualsRequired() throws Exception {
+		ExchangeOffer exchangeOffer;
+		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required)
+				.setRequiredValue(2L).setOwner(owner).build();
+		assertEquals(victim, ExchangeOffer.validate(exchangeOffer));
 	}
 
 	@Test
 	public void isMatching() throws Exception {
-		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
-		doReturn(required).when(exchangeOffer).getOffered();
-		doReturn(offered).when(exchangeOffer).getRequired();
+		ExchangeOffer exchangeOffer;
+		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(offered)
+				.setRequiredValue(2L).setOwner(owner).build();
 		assertEquals(true, victim.isMatching(exchangeOffer));
+		assertEquals(true, exchangeOffer.isMatching(victim));
+
+		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required)
+				.setRequiredValue(2L).setOwner(owner).build();
+		assertEquals(false, victim.isMatching(exchangeOffer));
+		assertEquals(false, exchangeOffer.isMatching(victim));
 	}
 
 	@Test
 	public void isOwned() throws Exception {
 		assertEquals(true, victim.isOwned(owner));
+
+		Owner test = mock(Owner.class);
+		doReturn(false).when(owner).equals(test);
+		assertEquals(false, victim.isOwned(test));
 	}
 
 	@Test
@@ -75,5 +96,4 @@ public class ExchangeOfferTest {
 						.build();
 		assertEquals(-1, victim.compareTo(exchangeOffer));
 	}
-
 }

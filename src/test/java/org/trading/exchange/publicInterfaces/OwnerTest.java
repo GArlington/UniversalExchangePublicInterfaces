@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -12,11 +14,12 @@ import static org.mockito.Mockito.mock;
  * Created by GArlington.
  */
 public class OwnerTest {
+	private String id = UUID.randomUUID().toString();
 	private Owner victim;
 
 	@Before
 	public void setUp() throws Exception {
-		victim = () -> "thisId";
+		victim = () -> id;
 	}
 
 	@After
@@ -26,7 +29,7 @@ public class OwnerTest {
 
 	@Test
 	public void getId() throws Exception {
-
+		assertEquals(id, victim.getId());
 	}
 
 	@Test
@@ -69,4 +72,11 @@ public class OwnerTest {
 		assertEquals(true, victim.isOwner(exchange));
 	}
 
+	@Test
+	public void equals() throws Exception {
+		assertEquals(true, victim.equals(victim));
+
+		Owner test = mock(Owner.class);
+		assertEquals(false, victim.equals(test));
+	}
 }

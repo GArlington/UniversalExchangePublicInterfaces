@@ -27,6 +27,10 @@ public interface Market extends Serializable {
 		return getOwner().equals(owner);
 	}
 
+	default boolean isFair() {
+		return isAutoMatching();
+	}
+
 	default boolean isAutoMatching() {
 		return true;
 	}
@@ -39,7 +43,19 @@ public interface Market extends Serializable {
 				.collect(Collectors.toList());
 	}
 
-	boolean accept(ExchangeOffer exchangeOffer);
+	default ExchangeOffer accept(ExchangeOffer exchangeOffer) {
+		if (validate(exchangeOffer)) {
+			synchronized (getOffers()) {
+				@SuppressWarnings("unchecked")
+				Collection<ExchangeOffer> exchangeOffers =
+						(Collection<ExchangeOffer>) getOffers();
+				if (exchangeOffers.add(exchangeOffer)) {
+					return exchangeOffer;
+				}
+			}
+		}
+		return null;
+	}
 
 	default boolean validate() throws IllegalStateException {
 		if (!validate(getLocation())) {

@@ -12,8 +12,31 @@ import java.util.stream.Stream;
 public interface UniversalExchange extends Serializable {
 	String getName();
 
+	/**
+	 * The exchange is fair if the offers are matched automatically according to "fair rules"
+	 *
+	 * These rules are:
+	 * Best offer
+	 * or
+	 * first out of all equal offers
+	 * wins
+	 */
+	default boolean isFair() {
+		return isAutoMatching();
+	}
+
+	/**
+	 * Allow the platform to attempt and match offers when they arrive
+	 */
 	default boolean isAutoMatching() {
 		return true;
+	}
+
+	/**
+	 * Allow the platform to attempt and match offers over multiple markets
+	 */
+	default boolean isCrossMarketMatching() {
+		return isAutoMatching();
 	}
 
 	Owner getOwner();
