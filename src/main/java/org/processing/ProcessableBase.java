@@ -24,5 +24,13 @@ interface ProcessableBase extends Serializable {
 			this.ordinal = ordinal;
 			this.name = name;
 		}
+
+		public int getOrdinal() {
+			return ordinal;
+		}
+
+		public String getName() {
+			return name;
+		}
 	}
 }
