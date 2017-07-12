@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
@@ -15,12 +16,74 @@ import static org.mockito.Mockito.mock;
  * Created by GArlington.
  */
 public class UniversalExchangeTest {
+	private String id = UUID.randomUUID().toString();
 	private UniversalExchange victim;
+
+	@Test
+	public void getName() throws Exception {
+	}
+
+	@Test
+	public void isFair() throws Exception {
+	}
+
+	@Test
+	public void isAutoMatching() throws Exception {
+	}
+
+	@Test
+	public void isCrossMarketMatching() throws Exception {
+	}
+
+	@Test
+	public void getOwner() throws Exception {
+	}
+
+	@Test
+	public void isOwnedBy() throws Exception {
+	}
+
+	@Test
+	public void getMarket() throws Exception {
+	}
+
+	@Test
+	public void validate() throws Exception {
+	}
+
+	@Test
+	public void open() throws Exception {
+	}
+
+	@Test
+	public void close() throws Exception {
+	}
+
+	@Test
+	public void validate1() throws Exception {
+	}
+
+	@Test
+	public void accept() throws Exception {
+	}
+
+	@Test
+	public void getMatching() throws Exception {
+	}
+
+	@Test
+	public void match() throws Exception {
+	}
 
 	@Before
 	public void setup() {
 		victim = new UniversalExchange() {
 			Collection<? extends Market> markets = new LinkedList<>();
+
+			@Override
+			public String getId() {
+				return id;
+			}
 
 			@Override
 			public String getName() {

@@ -8,12 +8,14 @@ import org.trading.exchange.publicInterfaces.Owner;
  */
 public class CommodityMock implements Commodity {
 	private String id;
+	private String name;
 	private long priceToQuantityRatio;
 	private char decimalSeparator;
 	private Owner owner;
 
 	public CommodityMock(String id, long priceToQuantityRatio, char decimalSeparator, Owner owner) {
 		this.id = id;
+		this.name = id;
 		this.priceToQuantityRatio = priceToQuantityRatio;
 		this.decimalSeparator = decimalSeparator;
 		this.owner = owner;
@@ -26,7 +28,7 @@ public class CommodityMock implements Commodity {
 
 	@Override
 	public String getName() {
-		return null;
+		return name;
 	}
 
 	@Override

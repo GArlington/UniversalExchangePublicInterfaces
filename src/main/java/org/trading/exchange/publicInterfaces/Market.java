@@ -7,10 +7,7 @@ import java.util.stream.Collectors;
 /**
  * Created by GArlington.
  */
-public interface Market extends Serializable {
-
-	String getId();
-
+public interface Market extends Serializable, UniquelyIdentifiable {
 	String getName();
 
 	Location getLocation();
@@ -23,7 +20,7 @@ public interface Market extends Serializable {
 
 	Owner getOwner();
 
-	default boolean isOwned(Owner owner) {
+	default boolean isOwnedBy(Owner owner) {
 		return getOwner().equals(owner);
 	}
 

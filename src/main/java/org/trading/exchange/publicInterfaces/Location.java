@@ -6,7 +6,7 @@ import java.util.Collection;
 /**
  * Created by GArlington.
  */
-public interface Location extends Serializable {
+public interface Location extends Serializable, UniquelyIdentifiable {
 	String getCode();
 
 	String getName();
@@ -17,7 +17,7 @@ public interface Location extends Serializable {
 
 	Owner getOwner();
 
-	default boolean isOwned(Owner owner) {
+	default boolean isOwnedBy(Owner owner) {
 		return getOwner().equals(owner);
 	}
 

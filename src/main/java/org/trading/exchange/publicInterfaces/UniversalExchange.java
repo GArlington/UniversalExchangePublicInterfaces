@@ -9,7 +9,10 @@ import java.util.stream.Stream;
 /**
  * Created by GArlington.
  */
-public interface UniversalExchange extends Serializable {
+public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
+	/**
+	 * Get the name of the Exchange
+	 */
 	String getName();
 
 	/**
@@ -41,7 +44,7 @@ public interface UniversalExchange extends Serializable {
 
 	Owner getOwner();
 
-	default boolean isOwned(Owner owner) {
+	default boolean isOwnedBy(Owner owner) {
 		return getOwner().equals(owner);
 	}
 

@@ -35,7 +35,7 @@ public class OwnerTest {
 	@Test
 	public void isOwnerCommodity() throws Exception {
 		Commodity commodity = mock(Commodity.class);
-		doReturn(true).when(commodity).isOwned(victim);
+		doReturn(true).when(commodity).isOwnedBy(victim);
 
 		assertEquals(true, victim.isOwner(commodity));
 	}
@@ -43,7 +43,7 @@ public class OwnerTest {
 	@Test
 	public void isOwnerExchangeOffer() throws Exception {
 		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
-		doReturn(true).when(exchangeOffer).isOwned(victim);
+		doReturn(true).when(exchangeOffer).isOwnedBy(victim);
 
 		assertEquals(true, victim.isOwner(exchangeOffer));
 	}
@@ -51,7 +51,7 @@ public class OwnerTest {
 	@Test
 	public void isOwnerLocation() throws Exception {
 		Location location = mock(Location.class);
-		doReturn(true).when(location).isOwned(victim);
+		doReturn(true).when(location).isOwnedBy(victim);
 
 		assertEquals(true, victim.isOwner(location));
 	}
@@ -59,7 +59,7 @@ public class OwnerTest {
 	@Test
 	public void isOwnerMarket() throws Exception {
 		Market market = mock(Market.class);
-		doReturn(true).when(market).isOwned(victim);
+		doReturn(true).when(market).isOwnedBy(victim);
 
 		assertEquals(true, victim.isOwner(market));
 	}
@@ -67,7 +67,7 @@ public class OwnerTest {
 	@Test
 	public void isOwnerUniversalExchange() throws Exception {
 		UniversalExchange exchange = mock(UniversalExchange.class);
-		doReturn(true).when(exchange).isOwned(victim);
+		doReturn(true).when(exchange).isOwnedBy(victim);
 
 		assertEquals(true, victim.isOwner(exchange));
 	}

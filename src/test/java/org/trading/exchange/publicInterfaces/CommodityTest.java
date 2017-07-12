@@ -14,6 +14,7 @@ import static org.mockito.Mockito.mock;
 public class CommodityTest {
 	private String greater = "2";
 	private String smaller = "1";
+	private String smallest = "0";
 	private Owner owner;
 	private Commodity victim, test;
 
@@ -34,20 +35,44 @@ public class CommodityTest {
 
 	@Test
 	public void getValue() throws Exception {
-		double qty = 1.1D;
-		long expected = 1100;
+		double qty;
+		long expected;
+		qty = 1.1D;
+		expected = 1100;
 		assertEquals(expected, victim.getValue(qty));
+		qty = 71;
+		expected = 71000;
+		assertEquals(expected, victim.getValue(qty));
+
+		Commodity test2 = new CommodityMock(smallest, 100, '.', owner);
+		qty = -1.2D;
+		expected = -120;
+		assertEquals(expected, test2.getValue(qty));
 	}
 
 	@Test
 	public void getValueAsString() throws Exception {
-		long value = 12345L;
-		String expected = "12.345";
+		long value;
+		String expected;
+		value = 12345L;
+		expected = "12.345";
 		assertEquals(expected, victim.getValue(value));
+		value = 1234567L;
+		expected = "1234.567";
+		assertEquals(expected, victim.getValue(value));
+
+		Commodity test2 = new CommodityMock(smallest, 100, '.', owner);
+		value = 12345L;
+		expected = "123.45";
+		assertEquals(expected, test2.getValue(value));
 	}
 
 	@Test
-	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwned(owner));
+	public void isOwnedBy() throws Exception {
+		assertEquals(true, victim.isOwnedBy(owner));
+
+		Owner other = mock(Owner.class);
+		doReturn(false).when(owner).equals(other);
+		assertEquals(false, victim.isOwnedBy(other));
 	}
 }

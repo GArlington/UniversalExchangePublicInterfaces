@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Created by GArlington.
  */
-public interface ExchangeOffer extends PreProcessable, Processable, PostProcessable, Comparable {
+public interface ExchangeOffer extends PreProcessable, Processable, PostProcessable, Comparable, UniquelyIdentifiable {
 	static ExchangeOffer validate(ExchangeOffer check) throws IllegalStateException {
 		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() > 0L &&
 				check.getRequiredValue() > 0L) {
@@ -51,7 +51,7 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 
 	Owner getOwner();
 
-	default boolean isOwned(Owner owner) {
+	default boolean isOwnedBy(Owner owner) {
 		return getOwner().equals(owner);
 	}
 
@@ -113,7 +113,12 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 	default int compareTo(Object object) {
 		if (this.equals(object)) return 0;
 		if (object == null || getClass() != object.getClass()) return 1;
-		ExchangeOffer exchangeOffer = (ExchangeOffer) object;
+
+		return compareTo((ExchangeOffer) object);
+	}
+
+	default int compareTo(ExchangeOffer exchangeOffer) {
+		if (this.equals(exchangeOffer)) return 0;
 
 		int result;
 		result = getOffered().compareTo(exchangeOffer.getOffered());
@@ -125,6 +130,7 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 		}
 		return result;
 	}
+
 
 	enum State implements Serializable {
 		INITIALISED(Processable.State.INITIALISED),

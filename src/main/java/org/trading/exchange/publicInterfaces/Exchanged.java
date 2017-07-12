@@ -6,13 +6,13 @@ import java.util.Collection;
 /**
  * Created by GArlington.
  */
-public interface Exchanged extends Serializable {
+public interface Exchanged extends Serializable, UniquelyIdentifiable {
 	default Owner getOwner() {
 		return getExchangeOffer() != null ? getExchangeOffer().getOwner() : null;
 	}
 
-	default boolean isOwned(Owner owner) {
-		return getExchangeOffer() != null && getExchangeOffer().isOwned(owner);
+	default boolean isOwnedBy(Owner owner) {
+		return getExchangeOffer() != null && getExchangeOffer().isOwnedBy(owner);
 	}
 
 	ExchangeOffer getExchangeOffer();

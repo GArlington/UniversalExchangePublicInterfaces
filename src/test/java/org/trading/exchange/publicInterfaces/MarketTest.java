@@ -84,9 +84,11 @@ public class MarketTest {
 
 	@Test
 	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwned(owner));
-		Owner owner1 = mock(Owner.class);
-		assertEquals(false, victim.isOwned(owner1));
+		assertEquals(true, victim.isOwnedBy(owner));
+
+		Owner other = mock(Owner.class);
+		doReturn(false).when(owner).equals(other);
+		assertEquals(false, victim.isOwnedBy(other));
 	}
 
 	@Test
@@ -252,5 +254,4 @@ public class MarketTest {
 		boolean result = victim.isCounter(exchangeOffer);
 		assertEquals(true, result);
 	}
-
 }

@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -15,6 +16,7 @@ import static org.mockito.Mockito.mock;
 public class LocationTest {
 	private Location victim;
 
+	private String id = UUID.randomUUID().toString();
 	private String code = "code";
 	private String name = "name";
 	private String description = "description";
@@ -28,6 +30,11 @@ public class LocationTest {
 		doReturn(true).when(owner).equals(owner);
 
 		victim = new Location() {
+			@Override
+			public String getId() {
+				return id;
+			}
+
 			@Override
 			public String getCode() {
 				return code;
@@ -82,7 +89,11 @@ public class LocationTest {
 
 	@Test
 	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwned(owner));
+		assertEquals(true, victim.isOwnedBy(owner));
+
+		Owner other = mock(Owner.class);
+		doReturn(false).when(owner).equals(other);
+		assertEquals(false, victim.isOwnedBy(other));
 	}
 
 	@Test

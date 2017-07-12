@@ -74,11 +74,11 @@ public class ExchangeOfferTest {
 
 	@Test
 	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwned(owner));
+		assertEquals(true, victim.isOwnedBy(owner));
 
-		Owner test = mock(Owner.class);
-		doReturn(false).when(owner).equals(test);
-		assertEquals(false, victim.isOwned(test));
+		Owner other = mock(Owner.class);
+		doReturn(false).when(owner).equals(other);
+		assertEquals(false, victim.isOwnedBy(other));
 	}
 
 	@Test

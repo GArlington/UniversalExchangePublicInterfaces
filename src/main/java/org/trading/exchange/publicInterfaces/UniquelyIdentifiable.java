@@ -9,7 +9,6 @@ public interface UniquelyIdentifiable {
 	 */
 	String getId();
 
-
 	default int defaultHashCode() {
 		return getId() != null ? getId().hashCode() : 0;
 	}

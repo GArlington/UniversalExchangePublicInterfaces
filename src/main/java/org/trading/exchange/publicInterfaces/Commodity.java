@@ -5,12 +5,7 @@ import java.io.Serializable;
 /**
  * Created by GArlington.
  */
-public interface Commodity extends Serializable, Comparable {
-	/**
-	 * This must be a unique identifier
-	 */
-	String getId();
-
+public interface Commodity extends Serializable, Comparable<Commodity>, UniquelyIdentifiable {
 	String getName();
 
 	String getDescription();
@@ -37,18 +32,16 @@ public interface Commodity extends Serializable, Comparable {
 
 	Owner getOwner();
 
-	default boolean isOwned(Owner owner) {
+	default boolean isOwnedBy(Owner owner) {
 		return getOwner().equals(owner);
 	}
 
 	char getDecimalSeparator();
 
 	@Override
-	default int compareTo(Object object) {
+	default int compareTo(Commodity object) {
 		if (this.equals(object)) return 0;
-		if (object == null || getClass() != object.getClass()) return 1;
-
-		Commodity commodity = (Commodity) object;
-		return getId().compareTo(commodity.getId());
+		if (object == null) return 1;
+		return getName().compareTo(object.getName());
 	}
 }

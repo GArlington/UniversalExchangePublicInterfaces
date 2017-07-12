@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
@@ -13,6 +14,7 @@ import static org.mockito.Mockito.mock;
  * Created by GArlington.
  */
 public class ExchangedTest {
+	private String id = UUID.randomUUID().toString();
 	private Owner owner;
 	private Owner matchedOwner;
 	private ExchangeOffer exchangeOffer;
@@ -26,11 +28,16 @@ public class ExchangedTest {
 		doReturn(true).when(owner).equals(owner);
 		exchangeOffer = mock(ExchangeOffer.class);
 		doReturn(owner).when(exchangeOffer).getOwner();
-		doReturn(true).when(exchangeOffer).isOwned(owner);
+		doReturn(true).when(exchangeOffer).isOwnedBy(owner);
 		matchedExchangeOffers = mock(Collection.class);
 
 
 		victim = new Exchanged() {
+			@Override
+			public String getId() {
+				return id;
+			}
+
 			@Override
 			public ExchangeOffer getExchangeOffer() {
 				return exchangeOffer;
@@ -50,9 +57,14 @@ public class ExchangedTest {
 
 	@Test
 	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwned(owner));
-		Owner test = mock(Owner.class);
-		assertEquals(false, victim.isOwned(test));
+		assertEquals(true, victim.isOwnedBy(owner));
+
+		Owner other = mock(Owner.class);
+		doReturn(true).when(owner).equals(other);
+		doReturn(true).when(other).equals(owner);
+		assertEquals(false, victim.isOwnedBy(other));
+
+//		fail();
 	}
 
 }
