@@ -60,11 +60,8 @@ public class ExchangedTest {
 		assertEquals(true, victim.isOwnedBy(owner));
 
 		Owner other = mock(Owner.class);
-		doReturn(true).when(owner).equals(other);
-		doReturn(true).when(other).equals(owner);
+		doReturn(false).when(exchangeOffer).isOwnedBy(other);
 		assertEquals(false, victim.isOwnedBy(other));
-
-//		fail();
 	}
 
 }
