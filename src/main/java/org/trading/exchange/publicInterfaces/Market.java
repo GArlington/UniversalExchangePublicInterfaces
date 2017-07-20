@@ -84,6 +84,10 @@ public interface Market extends Serializable, UniquelyIdentifiable {
 		return getOffered().equals(exchangeOffer.getRequired()) && getRequired().equals(exchangeOffer.getOffered());
 	}
 
+	default boolean isCrossMarket(Market market) {
+		return getOffered().equals(market.getRequired()) || getRequired().equals(market.getOffered());
+	}
+
 	default boolean equals(Market market) {
 		return getId().equals(market.getId());
 	}
