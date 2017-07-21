@@ -36,10 +36,10 @@ public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
 	}
 
 	/**
-	 * Allow the platform to attempt and match offers over multiple markets
+	 * Allow the platform to attempt and match offers across multiple markets
 	 */
 	default boolean isCrossMarketMatching() {
-		return isAutoMatching();
+		return false;
 	}
 
 	Owner getOwner();
