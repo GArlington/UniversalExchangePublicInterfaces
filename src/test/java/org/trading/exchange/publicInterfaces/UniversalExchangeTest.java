@@ -143,6 +143,11 @@ public class UniversalExchangeTest {
 					throws InvalidParameterException, IllegalStateException {
 				return null;
 			}
+
+			@Override
+			public <T extends ExchangeOffer> T createCounterOffer(T exchangeOffer, int margin) {
+				return null;
+			}
 		};
 	}
 

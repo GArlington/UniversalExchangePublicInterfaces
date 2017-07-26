@@ -92,8 +92,15 @@ public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
 	 * Get all open markets suitable for ExchangeOffer
 	 */
 	default Collection<? extends Market> getMarkets(ExchangeOffer exchangeOffer) {
-		if (exchangeOffer == null) return getMarkets();
-		return getMarkets().stream().filter(market -> market.validate(exchangeOffer)).collect(Collectors.toList());
+		return getMarkets(exchangeOffer, getMarkets());
+	}
+
+	/**
+	 * Get all markets suitable for ExchangeOffer from the Collection of Markets
+	 */
+	default Collection<? extends Market> getMarkets(ExchangeOffer exchangeOffer, Collection<? extends Market> markets) {
+		if (exchangeOffer == null) return markets;
+		return markets.stream().filter(market -> market.validate(exchangeOffer)).collect(Collectors.toList());
 	}
 
 	/**
@@ -175,4 +182,27 @@ public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
 	 */
 	Exchanged match(ExchangeOffer exchangeOffer, Market market, ExchangeOffer... exchangeOffers)
 			throws InvalidParameterException, IllegalStateException;
+
+	/**
+	 * Create counter offer to exchange Commodity acquired via ExchangeOffer back into Commodity originally owned
+	 * thus facilitating continuous lossless trading
+	 *
+	 * @param exchangeOffer
+	 * @param <T>
+	 * @return
+	 */
+	default <T extends ExchangeOffer> T createCounterOffer(T exchangeOffer) {
+		return createCounterOffer(exchangeOffer, 10);
+	}
+
+	/**
+	 * Create counter offer to exchange Commodity acquired via ExchangeOffer back into Commodity originally owned
+	 * thus facilitating continuous lossless trading
+	 *
+	 * @param exchangeOffer
+	 * @param margin        - this value will define a trading margin, this is what we will aim to gain per trade (in 1/1,000th of the value)
+	 * @param <T>
+	 * @return
+	 */
+	<T extends ExchangeOffer> T createCounterOffer(T exchangeOffer, int margin);
 }

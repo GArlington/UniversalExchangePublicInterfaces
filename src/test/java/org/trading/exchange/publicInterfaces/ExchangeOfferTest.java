@@ -83,6 +83,7 @@ public class ExchangeOfferTest {
 
 	@Test
 	public void compareTo() throws Exception {
+		assertEquals(0, victim.compareTo(victim));
 		ExchangeOffer exchangeOffer =
 				ExchangeOfferMock.getBuilder().setOffered(victim.getOffered()).setOfferedValue(victim
 						.getOfferedValue())
