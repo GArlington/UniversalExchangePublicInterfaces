@@ -113,6 +113,29 @@ public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
 	}
 
 	/**
+	 * Get markets capable of handling given Commodity
+	 */
+	default Collection<? extends Market> getMarkets(Commodity commodity) {
+		return getMarkets(commodity, getMarkets());
+	}
+
+	/**
+	 * Get markets at given Location capable of handling given Commodity
+	 */
+	default Collection<? extends Market> getMarkets(Location location, Commodity commodity) {
+		return getMarkets(commodity, getMarkets(location));
+	}
+
+	/**
+	 * Get markets capable of handling given Commodity
+	 */
+	default Collection<? extends Market> getMarkets(Commodity commodity, Collection<? extends Market> markets) {
+		if (commodity == null) return markets;
+		return markets.stream().filter(market -> (market.getOffered().equals(commodity) || market.getRequired().equals(commodity)))
+				.collect(Collectors.toList());
+	}
+
+	/**
 	 * Get Market by Id
 	 */
 	default Market getMarket(String id) {

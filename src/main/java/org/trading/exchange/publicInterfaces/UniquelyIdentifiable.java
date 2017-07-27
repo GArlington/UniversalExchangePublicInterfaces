@@ -20,4 +20,8 @@ public interface UniquelyIdentifiable {
 	int hashCode();
 
 	boolean equals(Object object);
+
+	default String defaultToString() {
+		return getClass().getName() + "{" + "id='" + getId() + "'}";
+	}
 }
