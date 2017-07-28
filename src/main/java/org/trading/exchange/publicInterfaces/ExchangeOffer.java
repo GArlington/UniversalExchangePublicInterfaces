@@ -56,12 +56,12 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 	}
 
 	/**
-	 * Get exchange rate
+	 * Get exchange rate in Required per Offered
 	 */
 	Comparable getExchangeRate();
 
 	/**
-	 * Get inverse exchange rate
+	 * Get inverse exchange rate in Offered per Required
 	 */
 	Comparable getInverseExchangeRate();
 
