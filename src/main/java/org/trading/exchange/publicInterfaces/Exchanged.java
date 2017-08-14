@@ -11,10 +11,6 @@ public interface Exchanged extends Serializable, UniquelyIdentifiable {
 		return getExchangeOffer() != null ? getExchangeOffer().getOwner() : null;
 	}
 
-	default boolean isOwnedBy(Owner owner) {
-		return getExchangeOffer() != null && getExchangeOffer().isOwnedBy(owner);
-	}
-
 	ExchangeOffer getExchangeOffer();
 
 	Collection<? extends ExchangeOffer> getMatchedExchangeOffers();

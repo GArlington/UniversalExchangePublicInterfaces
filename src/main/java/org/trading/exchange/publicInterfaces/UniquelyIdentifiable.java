@@ -1,5 +1,7 @@
 package org.trading.exchange.publicInterfaces;
 
+import org.util.StringUtilities;
+
 /**
  * Created by G.Arlington.
  */
@@ -22,6 +24,10 @@ public interface UniquelyIdentifiable {
 	boolean equals(Object object);
 
 	default String defaultToString() {
+		return StringUtilities.toString(this);
+	}
+
+	default String simpleToString() {
 		return getClass().getName() + "{" + "id='" + getId() + "'}";
 	}
 }

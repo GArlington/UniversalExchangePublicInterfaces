@@ -51,10 +51,6 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 
 	Owner getOwner();
 
-	default boolean isOwnedBy(Owner owner) {
-		return getOwner().equals(owner);
-	}
-
 	/**
 	 * Get exchange rate in Required per Offered
 	 */

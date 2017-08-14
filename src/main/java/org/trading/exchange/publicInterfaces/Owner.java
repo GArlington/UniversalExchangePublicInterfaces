@@ -9,23 +9,23 @@ public interface Owner extends UniquelyIdentifiable {
 	Owner PLATFORM_OWNER = () -> UUID.fromString("fdfe1ed5-5346-4dd6-8a65-a79c2e1a84c5").toString();
 
 	default boolean isOwner(Commodity commodity) {
-		return commodity.isOwnedBy(this);
+		return this.equals(commodity.getOwner());
 	}
 
 	default boolean isOwner(ExchangeOffer exchangeOffer) {
-		return exchangeOffer.isOwnedBy(this);
+		return this.equals(exchangeOffer.getOwner());
 	}
 
 	default boolean isOwner(Location location) {
-		return location.isOwnedBy(this);
+		return this.equals(location.getOwner());
 	}
 
 	default boolean isOwner(Market market) {
-		return market.isOwnedBy(this);
+		return this.equals(market.getOwner());
 	}
 
 	default boolean isOwner(UniversalExchange platform) {
-		return platform.isOwnedBy(this);
+		return this.equals(platform.getOwner());
 	}
 
 	default boolean equals(Owner owner) {

@@ -25,10 +25,8 @@ public class ExchangedTest {
 	@Before
 	public void setup() {
 		owner = mock(Owner.class);
-		doReturn(true).when(owner).equals(owner);
 		exchangeOffer = mock(ExchangeOffer.class);
 		doReturn(owner).when(exchangeOffer).getOwner();
-		doReturn(true).when(exchangeOffer).isOwnedBy(owner);
 		matchedExchangeOffers = mock(Collection.class);
 
 
@@ -54,14 +52,4 @@ public class ExchangedTest {
 	public void getOwner() throws Exception {
 		assertEquals(owner, victim.getOwner());
 	}
-
-	@Test
-	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwnedBy(owner));
-
-		Owner other = mock(Owner.class);
-		doReturn(false).when(exchangeOffer).isOwnedBy(other);
-		assertEquals(false, victim.isOwnedBy(other));
-	}
-
 }

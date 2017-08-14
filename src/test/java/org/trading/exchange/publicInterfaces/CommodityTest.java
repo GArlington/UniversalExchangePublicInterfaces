@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.trading.exchange.publicInterfaces.mocks.CommodityMock;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -21,7 +20,6 @@ public class CommodityTest {
 	@Before
 	public void setup() {
 		owner = mock(Owner.class);
-		doReturn(true).when(owner).equals(owner);
 		victim = new CommodityMock(greater, 1000, '.', owner);
 		test = new CommodityMock(smaller, 1000, '.', owner);
 	}
@@ -65,14 +63,5 @@ public class CommodityTest {
 		value = 12345L;
 		expected = "123.45";
 		assertEquals(expected, test2.getValue(value));
-	}
-
-	@Test
-	public void isOwnedBy() throws Exception {
-		assertEquals(true, victim.isOwnedBy(owner));
-
-		Owner other = mock(Owner.class);
-		doReturn(false).when(owner).equals(other);
-		assertEquals(false, victim.isOwnedBy(other));
 	}
 }

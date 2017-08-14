@@ -32,10 +32,6 @@ public interface Commodity extends Serializable, Comparable<Commodity>, Uniquely
 
 	Owner getOwner();
 
-	default boolean isOwnedBy(Owner owner) {
-		return getOwner().equals(owner);
-	}
-
 	char getDecimalSeparator();
 
 	@Override

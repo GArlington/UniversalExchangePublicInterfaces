@@ -30,7 +30,6 @@ public class MarketTest {
 		offered = mock(Commodity.class);
 		required = mock(Commodity.class);
 		owner = mock(Owner.class);
-		doReturn(true).when(owner).equals(owner);
 		doReturn(true).when(location).checkCommodity(offered);
 		doReturn(true).when(location).checkCommodity(required);
 
@@ -80,15 +79,6 @@ public class MarketTest {
 			}
 */
 		};
-	}
-
-	@Test
-	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwnedBy(owner));
-
-		Owner other = mock(Owner.class);
-		doReturn(false).when(owner).equals(other);
-		assertEquals(false, victim.isOwnedBy(other));
 	}
 
 	@Test

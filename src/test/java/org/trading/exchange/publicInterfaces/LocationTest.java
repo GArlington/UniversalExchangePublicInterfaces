@@ -27,7 +27,6 @@ public class LocationTest {
 	public void setup() {
 		commodities = mock(Collection.class);
 		owner = mock(Owner.class);
-		doReturn(true).when(owner).equals(owner);
 
 		victim = new Location() {
 			@Override
@@ -85,15 +84,6 @@ public class LocationTest {
 	@Test
 	public void getOwner() throws Exception {
 		assertEquals(owner, victim.getOwner());
-	}
-
-	@Test
-	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwnedBy(owner));
-
-		Owner other = mock(Owner.class);
-		doReturn(false).when(owner).equals(other);
-		assertEquals(false, victim.isOwnedBy(other));
 	}
 
 	@Test

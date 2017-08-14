@@ -20,10 +20,6 @@ public interface Market extends Serializable, UniquelyIdentifiable {
 
 	Owner getOwner();
 
-	default boolean isOwnedBy(Owner owner) {
-		return getOwner().equals(owner);
-	}
-
 	default boolean isFair() {
 		return isAutoMatching();
 	}

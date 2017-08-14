@@ -17,10 +17,6 @@ public interface Location extends Serializable, UniquelyIdentifiable {
 
 	Owner getOwner();
 
-	default boolean isOwnedBy(Owner owner) {
-		return getOwner().equals(owner);
-	}
-
 	default boolean checkCommodity(Commodity commodity) {
 		return getCommodities().contains(commodity);
 	}

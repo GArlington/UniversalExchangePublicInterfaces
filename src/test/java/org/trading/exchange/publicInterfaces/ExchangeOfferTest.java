@@ -27,7 +27,6 @@ public class ExchangeOfferTest {
 		doReturn(-1).when(required).compareTo(offered);
 		owner = mock(Owner.class);
 		doReturn("thisId").when(owner).getId();
-		doReturn(true).when(owner).equals(owner);
 		victim = ExchangeOfferMock.getBuilder().setOffered(offered).setOfferedValue(1L).setRequired(required)
 				.setRequiredValue(2L).setOwner(owner).build();
 	}
@@ -70,15 +69,6 @@ public class ExchangeOfferTest {
 				.setRequiredValue(2L).setOwner(owner).build();
 		assertEquals(false, victim.isMatching(exchangeOffer));
 		assertEquals(false, exchangeOffer.isMatching(victim));
-	}
-
-	@Test
-	public void isOwned() throws Exception {
-		assertEquals(true, victim.isOwnedBy(owner));
-
-		Owner other = mock(Owner.class);
-		doReturn(false).when(owner).equals(other);
-		assertEquals(false, victim.isOwnedBy(other));
 	}
 
 	@Test
