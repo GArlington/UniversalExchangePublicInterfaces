@@ -1,12 +1,14 @@
 package org.trading.exchange.publicInterfaces;
 
-import java.io.Serializable;
+import org.data.UniversalSerializable;
+import org.security.UniquelyIdentifiable;
+
 import java.util.Collection;
 
 /**
  * Created by GArlington.
  */
-public interface Exchanged extends Serializable, UniquelyIdentifiable {
+public interface Exchanged extends UniversalSerializable, UniquelyIdentifiable {
 	default Owner getOwner() {
 		return getExchangeOffer() != null ? getExchangeOffer().getOwner() : null;
 	}

@@ -130,8 +130,8 @@ public class MarketTest {
 		assertEquals(false, victim.getOffers().contains(exchangeOffer));
 	}
 
-	private ExchangeOffer createValidExchangeOfferMock(ExchangeOffer.State state, Commodity offered, long offeredValue,
-													   Commodity required, long requiredValue) {
+	private ExchangeOffer createValidExchangeOfferMock(ExchangeOffer.State state, Commodity offered, long offeredValue, Commodity required,
+													   long requiredValue) {
 		ExchangeOffer exchangeOffer = mock(ExchangeOffer.class);
 		doReturn(state).when(exchangeOffer).getState();
 		doReturn(exchangeOffer).when(exchangeOffer).preProcess();

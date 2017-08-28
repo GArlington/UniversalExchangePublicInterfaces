@@ -1,6 +1,8 @@
 package org.trading.exchange.publicInterfaces;
 
-import java.io.Serializable;
+import org.data.UniversalSerializable;
+import org.security.UniquelyIdentifiable;
+
 import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -9,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * Created by GArlington.
  */
-public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
+public interface UniversalExchange extends UniversalSerializable, UniquelyIdentifiable {
 	/**
 	 * Get the name of the Exchange
 	 */
@@ -55,8 +57,8 @@ public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
 	 * Get all commodities currently handled by the Exchange at Location
 	 */
 	default Collection<? extends Commodity> getCommodities(Location location) {
-		return Stream.concat(getMarkets(location).stream().map(Market::getOffered),
-				getMarkets(location).stream().map(Market::getRequired)).collect(Collectors.toList());
+		return Stream.concat(getMarkets(location).stream().map(Market::getOffered), getMarkets(location).stream().map(Market::getRequired))
+				.collect(Collectors.toList());
 	}
 
 	/**
@@ -104,8 +106,7 @@ public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
 	 */
 	default Collection<? extends Market> getMarkets(Location location) {
 		if (location == null) return getMarkets();
-		return getMarkets().stream().filter(market -> market.getLocation().equals(location))
-				.collect(Collectors.toList());
+		return getMarkets().stream().filter(market -> market.getLocation().equals(location)).collect(Collectors.toList());
 	}
 
 	/**
@@ -199,8 +200,7 @@ public interface UniversalExchange extends Serializable, UniquelyIdentifiable {
 	 * @throws InvalidParameterException
 	 * @throws IllegalStateException
 	 */
-	Exchanged match(ExchangeOffer exchangeOffer, Market market, ExchangeOffer... exchangeOffers)
-			throws InvalidParameterException, IllegalStateException;
+	Exchanged match(ExchangeOffer exchangeOffer, Market market, ExchangeOffer... exchangeOffers) throws InvalidParameterException, IllegalStateException;
 
 	/**
 	 * Create counter offer to exchange Commodity acquired via ExchangeOffer back into Commodity originally owned

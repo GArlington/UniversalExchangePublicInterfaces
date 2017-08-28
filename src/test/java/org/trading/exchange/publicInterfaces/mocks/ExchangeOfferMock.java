@@ -1,6 +1,6 @@
 package org.trading.exchange.publicInterfaces.mocks;
 
-import org.processing.Processable;
+import org.processing.ProcessState;
 import org.trading.exchange.publicInterfaces.Commodity;
 import org.trading.exchange.publicInterfaces.ExchangeOffer;
 import org.trading.exchange.publicInterfaces.Exchanged;
@@ -26,17 +26,16 @@ public class ExchangeOfferMock implements ExchangeOffer {
 	private long requiredValue;
 	private long matchedRequiredValue;
 	private ExchangeOffer.State state = State.INITIALISED;
-	private Processable.State processState = Processable.State.INITIALISED;
+	private ProcessState processState = ProcessState.INITIALISED;
 	private Exchanged exchanged;
 	private int exchangeRatePrecision;
 
 	public ExchangeOfferMock(ExchangeOffer exchangeOffer) {
-		this(exchangeOffer.getOffered(), exchangeOffer.getOfferedValue(), exchangeOffer.getRequired(),
-				exchangeOffer.getRequiredValue(), exchangeOffer.getOwner(), exchangeOffer.getExchangeRatePrecision());
+		this(exchangeOffer.getOffered(), exchangeOffer.getOfferedValue(), exchangeOffer.getRequired(), exchangeOffer.getRequiredValue(),
+			 exchangeOffer.getOwner(), exchangeOffer.getExchangeRatePrecision());
 	}
 
-	ExchangeOfferMock(Commodity offered, long offeredValue, Commodity required, long requiredValue, Owner owner,
-					  int exchangeRatePrecision) {
+	ExchangeOfferMock(Commodity offered, long offeredValue, Commodity required, long requiredValue, Owner owner, int exchangeRatePrecision) {
 		this.id = UUID.randomUUID().toString();
 		this.exchangeRatePrecision = exchangeRatePrecision;
 		this.offered = offered;
@@ -147,31 +146,21 @@ public class ExchangeOfferMock implements ExchangeOffer {
 	}
 
 	@Override
-	public Processable.State getProcessState() {
+	public ProcessState getProcessState() {
 		return processState;
 	}
 
 	@Override
-	public void setProcessState(Processable.State state) {
+	public void setProcessState(ProcessState state) {
 		this.processState = state;
 	}
 
 	@Override
 	public String toString() {
-		return "ExchangeOfferMock{" +
-				"state=" + state +
-				", processState=" + processState +
-				", offered=" + offered +
-				", offeredValue=" + offeredValue +
-				", exchangeRate=" + getExchangeRate() +
-				", originalOfferedValue=" + originalOfferedValue +
-				", matchedOfferedValue=" + matchedOfferedValue +
-				", required=" + required +
-				", requiredValue=" + requiredValue +
-				", inverseExchangeRate=" + getInverseExchangeRate() +
-				", originalRequiredValue=" + originalRequiredValue +
-				", matchedRequiredValue=" + matchedRequiredValue +
-				'}' + '\n';
+		return "ExchangeOfferMock{" + "state=" + state + ", processState=" + processState + ", offered=" + offered + ", offeredValue=" + offeredValue +
+				", exchangeRate=" + getExchangeRate() + ", originalOfferedValue=" + originalOfferedValue + ", matchedOfferedValue=" + matchedOfferedValue +
+				", required=" + required + ", requiredValue=" + requiredValue + ", inverseExchangeRate=" + getInverseExchangeRate() +
+				", originalRequiredValue=" + originalRequiredValue + ", matchedRequiredValue=" + matchedRequiredValue + '}' + '\n';
 	}
 
 	public static class Builder<T> implements ExchangeOffer.Builder {

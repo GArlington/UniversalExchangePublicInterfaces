@@ -27,8 +27,7 @@ public class ExchangeOfferTest {
 		doReturn(-1).when(required).compareTo(offered);
 		owner = mock(Owner.class);
 		doReturn("thisId").when(owner).getId();
-		victim = ExchangeOfferMock.getBuilder().setOffered(offered).setOfferedValue(1L).setRequired(required)
-				.setRequiredValue(2L).setOwner(owner).build();
+		victim = ExchangeOfferMock.getBuilder().setOffered(offered).setOfferedValue(1L).setRequired(required).setRequiredValue(2L).setOwner(owner).build();
 	}
 
 	@Test
@@ -44,29 +43,28 @@ public class ExchangeOfferTest {
 	@Test(expected = IllegalStateException.class)
 	public void validateStaticInvalid() throws Exception {
 		ExchangeOffer exchangeOffer;
-		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required)
-				.setOwner(owner).build();
+		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required).setOwner(owner).build();
 		assertEquals(victim, ExchangeOffer.validate(exchangeOffer));
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void validateStaticInvalidOfferedEqualsRequired() throws Exception {
 		ExchangeOffer exchangeOffer;
-		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required)
-				.setRequiredValue(2L).setOwner(owner).build();
+		exchangeOffer =
+				ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required).setRequiredValue(2L).setOwner(owner).build();
 		assertEquals(victim, ExchangeOffer.validate(exchangeOffer));
 	}
 
 	@Test
 	public void isMatching() throws Exception {
 		ExchangeOffer exchangeOffer;
-		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(offered)
-				.setRequiredValue(2L).setOwner(owner).build();
+		exchangeOffer =
+				ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(offered).setRequiredValue(2L).setOwner(owner).build();
 		assertEquals(true, victim.isMatching(exchangeOffer));
 		assertEquals(true, exchangeOffer.isMatching(victim));
 
-		exchangeOffer = ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required)
-				.setRequiredValue(2L).setOwner(owner).build();
+		exchangeOffer =
+				ExchangeOfferMock.getBuilder().setOffered(required).setOfferedValue(1L).setRequired(required).setRequiredValue(2L).setOwner(owner).build();
 		assertEquals(false, victim.isMatching(exchangeOffer));
 		assertEquals(false, exchangeOffer.isMatching(victim));
 	}
@@ -75,16 +73,12 @@ public class ExchangeOfferTest {
 	public void compareTo() throws Exception {
 		assertEquals(0, victim.compareTo(victim));
 		ExchangeOffer exchangeOffer =
-				ExchangeOfferMock.getBuilder().setOffered(victim.getOffered()).setOfferedValue(victim
-						.getOfferedValue())
-						.setRequired(victim.getRequired()).setRequiredValue(victim.getRequiredValue()).setOwner(owner)
-						.build();
+				ExchangeOfferMock.getBuilder().setOffered(victim.getOffered()).setOfferedValue(victim.getOfferedValue()).setRequired(victim.getRequired())
+						.setRequiredValue(victim.getRequiredValue()).setOwner(owner).build();
 		assertEquals(0, victim.compareTo(exchangeOffer));
 		exchangeOffer =
-				ExchangeOfferMock.getBuilder().setOffered(victim.getOffered()).setOfferedValue(victim
-						.getOfferedValue())
-						.setRequired(victim.getOffered()).setRequiredValue(victim.getRequiredValue()).setOwner(owner)
-						.build();
+				ExchangeOfferMock.getBuilder().setOffered(victim.getOffered()).setOfferedValue(victim.getOfferedValue()).setRequired(victim.getOffered())
+						.setRequiredValue(victim.getRequiredValue()).setOwner(owner).build();
 		assertEquals(-1, victim.compareTo(exchangeOffer));
 	}
 }

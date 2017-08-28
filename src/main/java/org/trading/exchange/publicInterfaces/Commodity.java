@@ -1,11 +1,12 @@
 package org.trading.exchange.publicInterfaces;
 
-import java.io.Serializable;
+import org.data.UniversalSerializable;
+import org.security.UniquelyIdentifiable;
 
 /**
  * Created by GArlington.
  */
-public interface Commodity extends Serializable, Comparable<Commodity>, UniquelyIdentifiable {
+public interface Commodity extends UniversalSerializable, Comparable<Commodity>, UniquelyIdentifiable {
 	String getName();
 
 	String getDescription();

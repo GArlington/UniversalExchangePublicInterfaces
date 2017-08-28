@@ -1,13 +1,15 @@
 package org.trading.exchange.publicInterfaces;
 
-import java.io.Serializable;
+import org.data.UniversalSerializable;
+import org.security.UniquelyIdentifiable;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
  * Created by GArlington.
  */
-public interface Market extends Serializable, UniquelyIdentifiable {
+public interface Market extends UniversalSerializable, UniquelyIdentifiable {
 	String getName();
 
 	Location getLocation();
@@ -30,18 +32,13 @@ public interface Market extends Serializable, UniquelyIdentifiable {
 
 	default Collection<? extends ExchangeOffer> getOffers(ExchangeOffer.State state) {
 		if (state == null) return getOffers();
-		return getOffers().stream()
-				.filter(order -> (state.equals(order.getState())))
-				.sorted()
-				.collect(Collectors.toList());
+		return getOffers().stream().filter(order -> (state.equals(order.getState()))).sorted().collect(Collectors.toList());
 	}
 
 	default ExchangeOffer accept(ExchangeOffer exchangeOffer) {
 		if (validate(exchangeOffer)) {
 			synchronized (getOffers()) {
-				@SuppressWarnings("unchecked")
-				Collection<ExchangeOffer> exchangeOffers =
-						(Collection<ExchangeOffer>) getOffers();
+				@SuppressWarnings("unchecked") Collection<ExchangeOffer> exchangeOffers = (Collection<ExchangeOffer>) getOffers();
 				if (exchangeOffers.add(exchangeOffer)) {
 					return exchangeOffer;
 				}

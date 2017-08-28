@@ -1,22 +1,22 @@
 package org.trading.exchange.publicInterfaces;
 
+import org.data.UniversalSerializable;
 import org.processing.PostProcessable;
 import org.processing.PreProcessable;
+import org.processing.ProcessState;
 import org.processing.Processable;
+import org.security.UniquelyIdentifiable;
 
 import java.io.Serializable;
 
 /**
  * Created by GArlington.
  */
-public interface ExchangeOffer extends PreProcessable, Processable, PostProcessable, Comparable, UniquelyIdentifiable {
+public interface ExchangeOffer extends UniversalSerializable, PreProcessable, Processable, PostProcessable, Comparable, UniquelyIdentifiable {
 	static ExchangeOffer validate(ExchangeOffer check) throws IllegalStateException {
-		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() > 0L &&
-				check.getRequiredValue() > 0L) {
+		if (check.getOffered() != null && check.getRequired() != null && check.getOfferedValue() > 0L && check.getRequiredValue() > 0L) {
 			if (check.getOffered() == check.getRequired()) {
-				throw new IllegalStateException(
-						"Offered " + check.getOffered() + " has to be different from required " + check.getRequired() +
-								". "
+				throw new IllegalStateException("Offered " + check.getOffered() + " has to be different from required " + check.getRequired() + ". "
 //					+ check
 				);
 			}
@@ -120,8 +120,7 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 		result = getOffered().compareTo(exchangeOffer.getOffered());
 		if (result == 0) result = getRequired().compareTo(exchangeOffer.getRequired());
 		if (result == 0) {
-			@SuppressWarnings("unchecked")
-			int temp = getExchangeRate().compareTo(exchangeOffer.getExchangeRate());
+			@SuppressWarnings("unchecked") int temp = getExchangeRate().compareTo(exchangeOffer.getExchangeRate());
 			result = temp;
 		}
 		return result;
@@ -129,20 +128,20 @@ public interface ExchangeOffer extends PreProcessable, Processable, PostProcessa
 
 
 	enum State implements Serializable {
-		INITIALISED(Processable.State.INITIALISED),
+		INITIALISED(ProcessState.INITIALISED),
 		VALIDATED(32, "Validated"),
-		PRE_PROCESSED(Processable.State.PRE_PROCESSED),
+		PRE_PROCESSED(ProcessState.PRE_PROCESSED),
 		OPEN(512, "Open"),
-		PROCESSED(Processable.State.PROCESSED),
+		PROCESSED(ProcessState.PROCESSED),
 		DEALT(8192, "DEALT"),
-		POST_PROCESSED(Processable.State.POST_PROCESSED),
+		POST_PROCESSED(ProcessState.POST_PROCESSED),
 		DONE(24575, "Done"),
-		FINALISED(Processable.State.FINALISED);
+		FINALISED(ProcessState.FINALISED);
 
 		final int ordinal;
 		final String name;
 
-		State(Processable.State state) {
+		State(ProcessState state) {
 			this(state.getOrdinal(), state.getName());
 		}
 

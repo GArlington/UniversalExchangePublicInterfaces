@@ -1,11 +1,14 @@
 package org.trading.exchange.publicInterfaces;
 
+import org.data.UniversalSerializable;
+import org.security.UniquelyIdentifiable;
+
 import java.util.UUID;
 
 /**
  * Created by GArlington.
  */
-public interface Owner extends UniquelyIdentifiable {
+public interface Owner extends UniversalSerializable, UniquelyIdentifiable {
 	Owner PLATFORM_OWNER = () -> UUID.fromString("fdfe1ed5-5346-4dd6-8a65-a79c2e1a84c5").toString();
 
 	default boolean isOwner(Commodity commodity) {

@@ -1,12 +1,14 @@
 package org.trading.exchange.publicInterfaces;
 
-import java.io.Serializable;
+import org.data.UniversalSerializable;
+import org.security.UniquelyIdentifiable;
+
 import java.util.Collection;
 
 /**
  * Created by GArlington.
  */
-public interface Location extends Serializable, UniquelyIdentifiable {
+public interface Location extends UniversalSerializable, UniquelyIdentifiable {
 	String getCode();
 
 	String getName();

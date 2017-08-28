@@ -37,10 +37,8 @@ public class ExchangeOfferStateTest {
 				precedingState = state;
 				continue;
 			}
-			assertEquals(precedingState + " does not precede " + state,
-					true, precedingState.precedes(state));
-			assertEquals(state + " does not succeed " + precedingState,
-					true, state.succeeds(precedingState));
+			assertEquals(precedingState + " does not precede " + state, true, precedingState.precedes(state));
+			assertEquals(state + " does not succeed " + precedingState, true, state.succeeds(precedingState));
 		}
 	}
 }

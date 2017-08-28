@@ -8,7 +8,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.UUID;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 
@@ -18,62 +19,6 @@ import static org.mockito.Mockito.mock;
 public class UniversalExchangeTest {
 	private String id = UUID.randomUUID().toString();
 	private UniversalExchange victim;
-
-	@Test
-	public void getName() throws Exception {
-	}
-
-	@Test
-	public void isFair() throws Exception {
-	}
-
-	@Test
-	public void isAutoMatching() throws Exception {
-	}
-
-	@Test
-	public void isCrossMarketMatching() throws Exception {
-	}
-
-	@Test
-	public void getOwner() throws Exception {
-	}
-
-	@Test
-	public void isOwnedBy() throws Exception {
-	}
-
-	@Test
-	public void getMarket() throws Exception {
-	}
-
-	@Test
-	public void validate() throws Exception {
-	}
-
-	@Test
-	public void open() throws Exception {
-	}
-
-	@Test
-	public void close() throws Exception {
-	}
-
-	@Test
-	public void validate1() throws Exception {
-	}
-
-	@Test
-	public void accept() throws Exception {
-	}
-
-	@Test
-	public void getMatching() throws Exception {
-	}
-
-	@Test
-	public void match() throws Exception {
-	}
 
 	@Before
 	public void setup() {
@@ -92,7 +37,7 @@ public class UniversalExchangeTest {
 
 			@Override
 			public Owner getOwner() {
-				return () -> null;
+				return () -> "ownerID";
 			}
 
 			@Override
@@ -119,23 +64,25 @@ public class UniversalExchangeTest {
 
 			@Override
 			public boolean close(Market market) throws IllegalStateException {
-				return false;
+				return getMarkets().remove(market);
 			}
 
 			@Override
-			public ExchangeOffer validate(ExchangeOffer exchangeOffer, Market market) throws
-					InvalidParameterException {
-				return null;
+			public ExchangeOffer validate(ExchangeOffer exchangeOffer, Market market) throws InvalidParameterException {
+				if (!market.validate(exchangeOffer)) {
+					throw new InvalidParameterException();
+				}
+				return exchangeOffer;
 			}
 
 			@Override
 			public ExchangeOffer accept(ExchangeOffer exchangeOffer, Market market) throws InvalidParameterException {
-				return null;
+				return market.accept(exchangeOffer);
 			}
 
 			@Override
 			public Collection<? extends ExchangeOffer> getMatching(ExchangeOffer exchangeOffer, Market market) {
-				return null;
+				return market.getOffers();
 			}
 
 			@Override
@@ -149,6 +96,62 @@ public class UniversalExchangeTest {
 				return null;
 			}
 		};
+	}
+
+	@Test
+	public void getName() throws Exception {
+	}
+
+	@Test
+	public void isFair() throws Exception {
+		assertEquals(true, victim.isFair());
+	}
+
+	@Test
+	public void isAutoMatching() throws Exception {
+		assertEquals(true, victim.isAutoMatching());
+	}
+
+	@Test
+	public void isCrossMarketMatching() throws Exception {
+		assertEquals(false, victim.isCrossMarketMatching());
+	}
+
+	@Test
+	public void getOwner() throws Exception {
+	}
+
+	@Test(expected = InvalidParameterException.class)
+	public void validate() throws Exception {
+		Market market = mock(Market.class);
+//		doReturn(true).when(market).validate(exchangeOffer);
+		assertEquals(market, victim.validate(market));
+		victim.open(market);
+		assertEquals(market, victim.validate(market));
+	}
+
+	@Test
+	public void open() throws Exception {
+	}
+
+	@Test
+	public void close() throws Exception {
+	}
+
+	@Test
+	public void validate1() throws Exception {
+	}
+
+	@Test
+	public void accept() throws Exception {
+	}
+
+	@Test
+	public void getMatching() throws Exception {
+	}
+
+	@Test
+	public void match() throws Exception {
 	}
 
 	@Test
@@ -225,7 +228,7 @@ public class UniversalExchangeTest {
 
 		assertNull(victim.getMarket(id));
 		victim.open(market);
-		assertNotNull(victim.getMarket(id));
+		assertEquals(market, victim.getMarket(id));
 	}
 
 	@Test
